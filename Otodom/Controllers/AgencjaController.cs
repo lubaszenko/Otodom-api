@@ -2,5 +2,6 @@
 {
     public class AgencjaController
     {
+        ads
     }
 }
