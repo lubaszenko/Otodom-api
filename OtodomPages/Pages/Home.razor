@@ -1,0 +1,47 @@
+﻿@page "/"
+@inject HttpClient httpClient
+@using DTO
+
+<PageTitle>Home</PageTitle>
+
+<h1>Hello, world!</h1>
+
+Welcome to your new app.
+
+<h3>Fetch Data</h3>
+
+<p>This is the fetched data:</p>
+
+@if (data != null)
+{
+    <ul>
+        @foreach (var agencja in data)
+        {
+            <li>@agencja.NazwaAgencji @agencja.Nip @agencja.NrTelefonuAgencji @agencja.IdAgencji</li>
+
+        }
+    </ul>
+}
+else
+{
+    <p>Loading...</p>
+}
+
+@code {
+    private List<Agencja> data;
+
+    protected override async Task OnInitializedAsync()
+    {
+        var apiUrl = "https://localhost:7144/agencjas";
+
+        try
+        {
+            data = await httpClient.GetFromJsonAsync<List<Agencja>>(apiUrl);
+        }
+        catch (Exception ex)
+        {
+            // Handle the exception
+            Console.WriteLine($"Error: {ex.Message}");
+        }
+    }
+}
