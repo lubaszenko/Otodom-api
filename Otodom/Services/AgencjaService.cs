@@ -11,7 +11,7 @@ namespace Otodom.Services
         public Task<List<Agencja>> GetAgencjasBiggerThan(int id);
         public Task<Agencja> PostAgencja(AgencjaRequest AgencjaToAdd);
     }
-    public class AgencjaService:IAgencjaService
+    public class AgencjaService : IAgencjaService
     {
         private readonly IAgencjaRepository _agencjaRepository;
 
@@ -22,7 +22,7 @@ namespace Otodom.Services
 
         public async Task<Agencja> GetAgencja(int id)
         {
-            if (id <= 0) 
+            if (id <= 0)
                 throw new Exception("Podałeś ujemne id.");
             var Agencje = await _agencjaRepository.GetAgencja(id);
             if (Agencje == null)

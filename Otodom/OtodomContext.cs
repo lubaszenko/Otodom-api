@@ -2,9 +2,8 @@
 using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
-using Otodom.Models;
 
-namespace Otodom
+namespace Otodom.Models
 {
     public partial class OtodomContext : DbContext
     {
@@ -18,22 +17,16 @@ namespace Otodom
         }
 
         public virtual DbSet<Agencja> Agencjas { get; set; } = null!;
-        public virtual DbSet<Dzialka> Dzialkas { get; set; } = null!;
-        public virtual DbSet<Garaz> Garazs { get; set; } = null!;
         public virtual DbSet<Klient> Klients { get; set; } = null!;
         public virtual DbSet<Nieruchomosc> Nieruchomoscs { get; set; } = null!;
         public virtual DbSet<Ogloszenie> Ogloszenies { get; set; } = null!;
-        public virtual DbSet<RodzajGruntu> RodzajGruntus { get; set; } = null!;
-        public virtual DbSet<RodzajOkna> RodzajOknas { get; set; } = null!;
-        public virtual DbSet<RodzajZabudowy> RodzajZabudowies { get; set; } = null!;
-        public virtual DbSet<StanWykonanium> StanWykonania { get; set; } = null!;
-        public virtual DbSet<TypOgrzewanium> TypOgrzewania { get; set; } = null!;
-        public virtual DbSet<WykonczenieGrazu> WykonczenieGrazus { get; set; } = null!;
+        public virtual DbSet<Zdjecie> Zdjecies { get; set; } = null!;
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             if (!optionsBuilder.IsConfigured)
             {
+#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
                 optionsBuilder.UseSqlServer("Server=127.0.0.1,1433;Database=Otodom;User=sa;Password=zaq1@WSX;");
             }
         }
@@ -47,9 +40,7 @@ namespace Otodom
 
                 entity.ToTable("agencja");
 
-                entity.Property(e => e.IdAgencji)
-                    .ValueGeneratedNever()
-                    .HasColumnName("ID_agencji");
+                entity.Property(e => e.IdAgencji).HasColumnName("ID_agencji");
 
                 entity.Property(e => e.Email)
                     .HasMaxLength(30)
@@ -70,79 +61,6 @@ namespace Otodom
                     .HasColumnName("nr_telefonu_agencji");
             });
 
-            modelBuilder.Entity<Dzialka>(entity =>
-            {
-                entity.HasKey(e => e.IdDzialki)
-                    .HasName("dzialka_PK");
-
-                entity.ToTable("dzialka");
-
-                entity.HasIndex(e => e.RodzajGruntuIdRodzajGruntu, "dzialka__IDX")
-                    .IsUnique();
-
-                entity.HasIndex(e => e.NieruchomoscIdNieruchomosci, "dzialka__IDXv1")
-                    .IsUnique();
-
-                entity.Property(e => e.IdDzialki)
-                    .ValueGeneratedNever()
-                    .HasColumnName("ID_dzialki");
-
-                entity.Property(e => e.NieruchomoscIdNieruchomosci).HasColumnName("nieruchomosc_ID_nieruchomosci");
-
-                entity.Property(e => e.PowierzchniaDzialki)
-                    .HasColumnType("numeric(10, 0)")
-                    .HasColumnName("powierzchnia_dzialki");
-
-                entity.Property(e => e.RodzajGruntuIdRodzajGruntu).HasColumnName("rodzaj_gruntu_ID_rodzaj_gruntu");
-
-                entity.HasOne(d => d.NieruchomoscIdNieruchomosciNavigation)
-                    .WithOne(p => p.Dzialka)
-                    .HasForeignKey<Dzialka>(d => d.NieruchomoscIdNieruchomosci)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("dzialka_nieruchomosc_FK");
-
-                entity.HasOne(d => d.RodzajGruntuIdRodzajGruntuNavigation)
-                    .WithOne(p => p.Dzialka)
-                    .HasForeignKey<Dzialka>(d => d.RodzajGruntuIdRodzajGruntu)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("dzialka_rodzaj_gruntu_FK");
-            });
-
-            modelBuilder.Entity<Garaz>(entity =>
-            {
-                entity.HasKey(e => e.IdGarazu)
-                    .HasName("garaz_PK");
-
-                entity.ToTable("garaz");
-
-                entity.HasIndex(e => e.WykonczenieGrazuIdWykonczenieGarazu, "garaz__IDX")
-                    .IsUnique();
-
-                entity.Property(e => e.IdGarazu)
-                    .ValueGeneratedNever()
-                    .HasColumnName("ID_garazu");
-
-                entity.Property(e => e.NieruchomoscIdNieruchomosci).HasColumnName("nieruchomosc_ID_nieruchomosci");
-
-                entity.Property(e => e.PowierzchniaGarazu)
-                    .HasColumnType("numeric(7, 0)")
-                    .HasColumnName("powierzchnia_garazu");
-
-                entity.Property(e => e.WykonczenieGrazuIdWykonczenieGarazu).HasColumnName("wykonczenie_grazu_ID_wykonczenie_garazu");
-
-                entity.HasOne(d => d.NieruchomoscIdNieruchomosciNavigation)
-                    .WithMany(p => p.Garazs)
-                    .HasForeignKey(d => d.NieruchomoscIdNieruchomosci)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("garaz_nieruchomosc_FK");
-
-                entity.HasOne(d => d.WykonczenieGrazuIdWykonczenieGarazuNavigation)
-                    .WithOne(p => p.Garaz)
-                    .HasForeignKey<Garaz>(d => d.WykonczenieGrazuIdWykonczenieGarazu)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("garaz_wykonczenie_grazu_FK");
-            });
-
             modelBuilder.Entity<Klient>(entity =>
             {
                 entity.HasKey(e => e.IdKlienta)
@@ -150,9 +68,7 @@ namespace Otodom
 
                 entity.ToTable("klient");
 
-                entity.Property(e => e.IdKlienta)
-                    .ValueGeneratedNever()
-                    .HasColumnName("ID_klienta");
+                entity.Property(e => e.IdKlienta).HasColumnName("ID_klienta");
 
                 entity.Property(e => e.AgencjaIdAgencji).HasColumnName("agencja_ID_agencji");
 
@@ -188,26 +104,7 @@ namespace Otodom
 
                 entity.ToTable("nieruchomosc");
 
-                entity.HasIndex(e => e.RodzajZabudowyIdRodzajZabudowy, "nieruchomosc__IDX")
-                    .IsUnique();
-
-                entity.HasIndex(e => e.RodzajOknaIdRodzajOkna, "nieruchomosc__IDXv1")
-                    .IsUnique();
-
-                entity.HasIndex(e => e.StanWykonaniaIdStanWykonania, "nieruchomosc__IDXv2")
-                    .IsUnique();
-
-                entity.HasIndex(e => e.TypOgrzewaniaIdTypOgrzewania, "nieruchomosc__IDXv3")
-                    .IsUnique();
-
-                entity.HasIndex(e => e.DzialkaIdDzialki, "nieruchomosc__IDXv4")
-                    .IsUnique();
-
-                entity.Property(e => e.IdNieruchomosci)
-                    .ValueGeneratedNever()
-                    .HasColumnName("ID_nieruchomosci");
-
-                entity.Property(e => e.DzialkaIdDzialki).HasColumnName("dzialka_ID_dzialki");
+                entity.Property(e => e.IdNieruchomosci).HasColumnName("ID_nieruchomosci");
 
                 entity.Property(e => e.KodPocztowy)
                     .HasColumnType("numeric(10, 0)")
@@ -230,17 +127,29 @@ namespace Otodom
                     .HasColumnType("numeric(10, 0)")
                     .HasColumnName("powierzchnia_domu");
 
-                entity.Property(e => e.RodzajOknaIdRodzajOkna).HasColumnName("rodzaj_okna_ID_rodzaj_okna");
+                entity.Property(e => e.RodzajOkna)
+                    .HasMaxLength(20)
+                    .IsUnicode(false)
+                    .HasColumnName("rodzaj_okna");
 
-                entity.Property(e => e.RodzajZabudowyIdRodzajZabudowy).HasColumnName("rodzaj_zabudowy_ID_rodzaj_zabudowy");
+                entity.Property(e => e.RodzajZabudowy)
+                    .HasMaxLength(20)
+                    .IsUnicode(false)
+                    .HasColumnName("rodzaj_zabudowy");
 
                 entity.Property(e => e.RokBudowy)
                     .HasColumnType("numeric(4, 0)")
                     .HasColumnName("rok_budowy");
 
-                entity.Property(e => e.StanWykonaniaIdStanWykonania).HasColumnName("stan_wykonania_ID_stan_wykonania");
+                entity.Property(e => e.StanWykonczenia)
+                    .HasMaxLength(15)
+                    .IsUnicode(false)
+                    .HasColumnName("stan_wykonczenia");
 
-                entity.Property(e => e.TypOgrzewaniaIdTypOgrzewania).HasColumnName("typ_ogrzewania_ID_typ_ogrzewania");
+                entity.Property(e => e.TypOgrzewania)
+                    .HasMaxLength(20)
+                    .IsUnicode(false)
+                    .HasColumnName("typ_ogrzewania");
 
                 entity.Property(e => e.Ulica)
                     .HasMaxLength(40)
@@ -251,35 +160,6 @@ namespace Otodom
                     .HasMaxLength(50)
                     .IsUnicode(false)
                     .HasColumnName("wojewodztwo");
-
-                entity.HasOne(d => d.DzialkaIdDzialkiNavigation)
-                    .WithOne(p => p.Nieruchomosc)
-                    .HasForeignKey<Nieruchomosc>(d => d.DzialkaIdDzialki)
-                    .HasConstraintName("nieruchomosc_dzialka_FK");
-
-                entity.HasOne(d => d.RodzajOknaIdRodzajOknaNavigation)
-                    .WithOne(p => p.Nieruchomosc)
-                    .HasForeignKey<Nieruchomosc>(d => d.RodzajOknaIdRodzajOkna)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("nieruchomosc_rodzaj_okna_FK");
-
-                entity.HasOne(d => d.RodzajZabudowyIdRodzajZabudowyNavigation)
-                    .WithOne(p => p.Nieruchomosc)
-                    .HasForeignKey<Nieruchomosc>(d => d.RodzajZabudowyIdRodzajZabudowy)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("nieruchomosc_rodzaj_zabudowy_FK");
-
-                entity.HasOne(d => d.StanWykonaniaIdStanWykonaniaNavigation)
-                    .WithOne(p => p.Nieruchomosc)
-                    .HasForeignKey<Nieruchomosc>(d => d.StanWykonaniaIdStanWykonania)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("nieruchomosc_stan_wykonania_FK");
-
-                entity.HasOne(d => d.TypOgrzewaniaIdTypOgrzewaniaNavigation)
-                    .WithOne(p => p.Nieruchomosc)
-                    .HasForeignKey<Nieruchomosc>(d => d.TypOgrzewaniaIdTypOgrzewania)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("nieruchomosc_typ_ogrzewania_FK");
             });
 
             modelBuilder.Entity<Ogloszenie>(entity =>
@@ -289,9 +169,7 @@ namespace Otodom
 
                 entity.ToTable("ogloszenie");
 
-                entity.Property(e => e.IdOgloszenia)
-                    .ValueGeneratedNever()
-                    .HasColumnName("ID_ogloszenia");
+                entity.Property(e => e.IdOgloszenia).HasColumnName("ID_ogloszenia");
 
                 entity.Property(e => e.Cena)
                     .HasColumnType("numeric(10, 0)")
@@ -330,106 +208,26 @@ namespace Otodom
                     .HasConstraintName("ogloszenie_nieruchomosc_FK");
             });
 
-            modelBuilder.Entity<RodzajGruntu>(entity =>
+            modelBuilder.Entity<Zdjecie>(entity =>
             {
-                entity.HasKey(e => e.IdRodzajGruntu)
-                    .HasName("rodzaj_gruntu_PK");
+                entity.HasKey(e => e.IdZdjecia)
+                    .HasName("zdjecie_PK");
 
-                entity.ToTable("rodzaj_gruntu");
+                entity.ToTable("zdjecie");
 
-                entity.Property(e => e.IdRodzajGruntu)
-                    .ValueGeneratedNever()
-                    .HasColumnName("ID_rodzaj_gruntu");
+                entity.Property(e => e.IdZdjecia).HasColumnName("ID_zdjecia");
 
-                entity.Property(e => e.RodzajGruntu1)
-                    .HasMaxLength(30)
-                    .IsUnicode(false)
-                    .HasColumnName("rodzaj_gruntu");
-            });
+                entity.Property(e => e.NieruchomoscIdNieruchomosci).HasColumnName("nieruchomosc_ID_nieruchomosci");
 
-            modelBuilder.Entity<RodzajOkna>(entity =>
-            {
-                entity.HasKey(e => e.IdRodzajOkna)
-                    .HasName("rodzaj_okna_PK");
+                entity.Property(e => e.Zdjecie1)
+                    .HasColumnType("image")
+                    .HasColumnName("zdjecie");
 
-                entity.ToTable("rodzaj_okna");
-
-                entity.Property(e => e.IdRodzajOkna)
-                    .ValueGeneratedNever()
-                    .HasColumnName("ID_rodzaj_okna");
-
-                entity.Property(e => e.RodzajOkna1)
-                    .HasMaxLength(30)
-                    .IsUnicode(false)
-                    .HasColumnName("rodzaj_okna");
-            });
-
-            modelBuilder.Entity<RodzajZabudowy>(entity =>
-            {
-                entity.HasKey(e => e.IdRodzajZabudowy)
-                    .HasName("rodzaj_zabudowy_PK");
-
-                entity.ToTable("rodzaj_zabudowy");
-
-                entity.Property(e => e.IdRodzajZabudowy)
-                    .ValueGeneratedNever()
-                    .HasColumnName("ID_rodzaj_zabudowy");
-
-                entity.Property(e => e.RodzajZabudowy1)
-                    .HasMaxLength(40)
-                    .IsUnicode(false)
-                    .HasColumnName("rodzaj_zabudowy");
-            });
-
-            modelBuilder.Entity<StanWykonanium>(entity =>
-            {
-                entity.HasKey(e => e.IdStanWykonania)
-                    .HasName("stan_wykonania_PK");
-
-                entity.ToTable("stan_wykonania");
-
-                entity.Property(e => e.IdStanWykonania)
-                    .ValueGeneratedNever()
-                    .HasColumnName("ID_stan_wykonania");
-
-                entity.Property(e => e.StanWykonania)
-                    .HasMaxLength(30)
-                    .IsUnicode(false)
-                    .HasColumnName("stan_wykonania");
-            });
-
-            modelBuilder.Entity<TypOgrzewanium>(entity =>
-            {
-                entity.HasKey(e => e.IdTypOgrzewania)
-                    .HasName("typ_ogrzewania_PK");
-
-                entity.ToTable("typ_ogrzewania");
-
-                entity.Property(e => e.IdTypOgrzewania)
-                    .ValueGeneratedNever()
-                    .HasColumnName("ID_typ_ogrzewania");
-
-                entity.Property(e => e.TypOgrzewania)
-                    .HasMaxLength(30)
-                    .IsUnicode(false)
-                    .HasColumnName("typ_ogrzewania");
-            });
-
-            modelBuilder.Entity<WykonczenieGrazu>(entity =>
-            {
-                entity.HasKey(e => e.IdWykonczenieGarazu)
-                    .HasName("wykonczenie_grazu_PK");
-
-                entity.ToTable("wykonczenie_grazu");
-
-                entity.Property(e => e.IdWykonczenieGarazu)
-                    .ValueGeneratedNever()
-                    .HasColumnName("ID_wykonczenie_garazu");
-
-                entity.Property(e => e.WykonczenieGarazu)
-                    .HasMaxLength(30)
-                    .IsUnicode(false)
-                    .HasColumnName("wykonczenie_garazu");
+                entity.HasOne(d => d.NieruchomoscIdNieruchomosciNavigation)
+                    .WithMany(p => p.Zdjecies)
+                    .HasForeignKey(d => d.NieruchomoscIdNieruchomosci)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("zdjecie_nieruchomosc_FK");
             });
 
             OnModelCreatingPartial(modelBuilder);

@@ -11,10 +11,10 @@ namespace Otodom.Repositories
         public Task<List<Agencja>> GetAgencjasBiggerThan(int id);
         public Task<Agencja> PostAgencja(AgencjaRequest AgencjaToAdd);
     }
-    public class AgencjaRepository:IAgencjaRepository
+    public class AgencjaRepository : IAgencjaRepository
     {
         private readonly OtodomContext _context;
-        
+
         public AgencjaRepository(OtodomContext context)
         {
             _context = context;

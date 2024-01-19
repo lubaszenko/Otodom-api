@@ -1,4 +1,5 @@
 using Otodom;
+using Otodom.Models;
 using Otodom.Repositories;
 using Otodom.Services;
 
@@ -6,8 +7,8 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddDbContext<OtodomContext>();
 
-builder.Services.AddScoped<IAgencjaRepository,AgencjaRepository>();
-builder.Services.AddScoped<IAgencjaService,AgencjaService>();
+builder.Services.AddScoped<IAgencjaRepository, AgencjaRepository>();
+builder.Services.AddScoped<IAgencjaService, AgencjaService>();
 
 builder.Services.AddSwaggerGen();
 
