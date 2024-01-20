@@ -9,6 +9,8 @@ builder.Services.AddDbContext<OtodomContext>();
 
 builder.Services.AddScoped<IAgencjaRepository, AgencjaRepository>();
 builder.Services.AddScoped<IAgencjaService, AgencjaService>();
+builder.Services.AddScoped<INieruchomoscRepository, NieruchomoscRepository>();
+builder.Services.AddScoped<INieruchomoscService, NieruchomoscService>();
 
 builder.Services.AddSwaggerGen();
 
