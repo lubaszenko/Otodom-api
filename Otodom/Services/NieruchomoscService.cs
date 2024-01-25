@@ -6,8 +6,8 @@ namespace Otodom.Services
 {
     public interface INieruchomoscService
     {
-        public Task<List<Nieruchomosc>> GetNieruchomoscs();
         public Task<Nieruchomosc> GetNieruchomoscs(int id);
+        public Task<List<Nieruchomosc>> GetNieruchomoscsWithPhotos();
 
         /*public Task<Nieruchomosc> GetNieruchomoscs(string miasto);*/
         public Task<Nieruchomosc> PostNieruchomosc(NieruchomoscRequest NieruchomoscToAdd);
@@ -22,14 +22,6 @@ namespace Otodom.Services
             _nieruchomoscRepository = nieruchomoscRepository;
         }
 
-        public async Task<List<Nieruchomosc>> GetNieruchomoscs()
-        {
-            var Nieruchomosci = await _nieruchomoscRepository.GetNieruchomoscs();
-            if (!Nieruchomosci.Any())
-                throw new Exception("Nie ma żadnej nieruchomości.");
-            return Nieruchomosci;
-        }
-
         public async Task<Nieruchomosc> GetNieruchomoscs(int id)
         {
             if (id <= 0)
@@ -40,6 +32,13 @@ namespace Otodom.Services
             return Nieruchomosc;
         }
 
+        public async Task<List<Nieruchomosc>> GetNieruchomoscsWithPhotos()
+        {
+            var Nieruchomosci = await _nieruchomoscRepository.GetNieruchomoscsWithPhotos();
+            if (!Nieruchomosci.Any())
+                throw new Exception("Nie ma żadnej nieruchomości.");
+            return Nieruchomosci;
+        }
         /*public async Task<Nieruchomosc> GetNieruchomoscs(string miasto)
         {
             var nieruchomosc = await _nieruchomoscRepository.GetNieruchomoscs(miasto);

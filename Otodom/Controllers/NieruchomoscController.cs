@@ -14,11 +14,11 @@ namespace Otodom.Controllers
             _nieruchomoscService = nieruchomoscService;
         }
         [HttpGet]
-        public async Task<IActionResult> GetNieruchomoscs()
+        public async Task<IActionResult> GetNieruchomoscsWithPhotos()
         {
             try
             {
-                var nieruchomoscs = await _nieruchomoscService.GetNieruchomoscs();
+                var nieruchomoscs = await _nieruchomoscService.GetNieruchomoscsWithPhotos();
                 return Ok(nieruchomoscs);
             }
             catch (Exception ex)

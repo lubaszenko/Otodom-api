@@ -6,7 +6,7 @@ namespace Otodom.Repositories
 {
     public interface INieruchomoscRepository
     {
-        public Task<List<Nieruchomosc>> GetNieruchomoscs();
+        public Task<List<Nieruchomosc>> GetNieruchomoscsWithPhotos();
         public Task<Nieruchomosc> GetNieruchomoscs(int id);
 
         /*public Task<Nieruchomosc> GetNieruchomoscs(string miasto);*/
@@ -22,15 +22,15 @@ namespace Otodom.Repositories
             _context = context;
         }
 
-        public async Task<List<Nieruchomosc>> GetNieruchomoscs()
-        {
-            return await _context.Nieruchomoscs.ToListAsync();
-        }
         public async Task<Nieruchomosc> GetNieruchomoscs(int id)
         {
             return await _context.Nieruchomoscs.Where(b => b.IdNieruchomosci == id).FirstOrDefaultAsync();
         }
 
+        public async Task<List<Nieruchomosc>> GetNieruchomoscsWithPhotos()
+        {
+            return await _context.Nieruchomoscs.Include(n => n.Zdjecies).ToListAsync();
+        }
         /*public async Task<Nieruchomosc> GetNieruchomoscs(string miasto)
         {
             return await _context.Nieruchomoscs.Where(a => a.Miasto == miasto).FirstOrDefaultAsync();
