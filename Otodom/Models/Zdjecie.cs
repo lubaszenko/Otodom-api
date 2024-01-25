@@ -6,7 +6,7 @@ namespace Otodom.Models
     public partial class Zdjecie
     {
         public int IdZdjecia { get; set; }
-        public byte[] Zdjecie1 { get; set; } = null!;
+        public byte[]? ZdjecieData { get; set; }
         public int NieruchomoscIdNieruchomosci { get; set; }
 
         public virtual Nieruchomosc NieruchomoscIdNieruchomosciNavigation { get; set; } = null!;

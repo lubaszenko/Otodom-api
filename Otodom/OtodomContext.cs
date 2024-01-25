@@ -2,9 +2,8 @@
 using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Otodom.Models;
 
-namespace Otodom.Models
-{
     public partial class OtodomContext : DbContext
     {
         public OtodomContext()
@@ -219,9 +218,7 @@ namespace Otodom.Models
 
                 entity.Property(e => e.NieruchomoscIdNieruchomosci).HasColumnName("nieruchomosc_ID_nieruchomosci");
 
-                entity.Property(e => e.Zdjecie1)
-                    .HasColumnType("image")
-                    .HasColumnName("zdjecie");
+                entity.Property(e => e.ZdjecieData).HasColumnName("zdjecie_data");
 
                 entity.HasOne(d => d.NieruchomoscIdNieruchomosciNavigation)
                     .WithMany(p => p.Zdjecies)
@@ -235,4 +232,4 @@ namespace Otodom.Models
 
         partial void OnModelCreatingPartial(ModelBuilder modelBuilder);
     }
-}
+
