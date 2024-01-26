@@ -27,7 +27,7 @@ namespace Otodom.Services
             if (id <= 0)
                 throw new Exception("Podałeś ujemne id.");
             var Nieruchomosc = await _nieruchomoscRepository.GetNieruchomoscs(id);
-            if (Nieruchomosc == null)
+            if (Nieruchomosc == null) 
                 throw new Exception(String.Format("Nie ma żadnej nieruchomości o id {0}.", id));
             return Nieruchomosc;
         }
@@ -51,8 +51,18 @@ namespace Otodom.Services
 
         public async Task<Nieruchomosc> PostNieruchomosc(NieruchomoscRequest NieruchomoscToAdd)
         {
-            if (NieruchomoscToAdd.KodPocztowy < 10000 || NieruchomoscToAdd.KodPocztowy > 99999)
-                throw new Exception("Podaj pełny kod pocztowy składający się z 5 cyfr.");
+            string kodPocztowyStr = NieruchomoscToAdd.KodPocztowy.ToString();
+
+            // Remove any decimal point and digits after it, if present
+            int dotIndex = kodPocztowyStr.IndexOf('.');
+            if (dotIndex != -1)
+            {
+                kodPocztowyStr = kodPocztowyStr.Substring(0, dotIndex);
+            }
+
+            if (kodPocztowyStr.Length != 5)
+                throw new Exception("Kod pocztowy nie składa się z 5 cyfr.");
+
             return await _nieruchomoscRepository.PostNieruchomosc(NieruchomoscToAdd);
         }
 
@@ -61,8 +71,6 @@ namespace Otodom.Services
             if (id <= 0)
                 throw new Exception("Podałeś ujemne id.");
             var NieruchomoscToDelete = await GetNieruchomoscs(id);
-            if (NieruchomoscToDelete == null)
-                throw new Exception("Nie znaleziono nieruchomości o identyfikatorze {id} do usunięcia.");
             await _nieruchomoscRepository.DeleteNieruchomoscs(NieruchomoscToDelete);
             return NieruchomoscToDelete;
         }

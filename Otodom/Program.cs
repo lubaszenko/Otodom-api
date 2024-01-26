@@ -11,6 +11,10 @@ builder.Services.AddScoped<IAgencjaRepository, AgencjaRepository>();
 builder.Services.AddScoped<IAgencjaService, AgencjaService>();
 builder.Services.AddScoped<INieruchomoscRepository, NieruchomoscRepository>();
 builder.Services.AddScoped<INieruchomoscService, NieruchomoscService>();
+builder.Services.AddScoped<IOgloszenieRepository, OgloszenieRepository>();
+builder.Services.AddScoped<IOgloszenieService, OgloszenieService>();
+builder.Services.AddScoped<IKlientRepository, KlientRepository>();
+builder.Services.AddScoped<IKlientService, KlientService>();
 
 builder.Services.AddSwaggerGen();
 

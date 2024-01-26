@@ -8,6 +8,7 @@ namespace Otodom.Repositories
     {
         public Task<List<Ogloszenie>> GetOgloszenie();
         public Task<Ogloszenie> DeleteOgloszenies(Ogloszenie OgloszenieToDelete);
+        public Task<Ogloszenie> PostOgloszenie(OgloszenieRequest OgloszenieToAdd);
     }
 
     public class OgloszenieRepository : IOgloszenieRepository
@@ -30,6 +31,23 @@ namespace Otodom.Repositories
             _context.Ogloszenies.Remove(OgloszenieToDelete);
             await _context.SaveChangesAsync();
             return OgloszenieToDelete;
+        }
+
+        public async Task<Ogloszenie> PostOgloszenie(OgloszenieRequest OgloszenieToAdd)
+        {
+            var ogloszenie = new Ogloszenie
+            {
+                Tytul = OgloszenieToAdd.Tytul,
+                DataDodania = OgloszenieToAdd.DataDodania,
+                Status = OgloszenieToAdd.Status,
+                Opis = OgloszenieToAdd.Opis,
+                Cena = OgloszenieToAdd.Cena,
+                KlientIdKlienta = OgloszenieToAdd.KlientIdKlienta,
+                NieruchomoscIdNieruchomosci = OgloszenieToAdd.NieruchomoscIdNieruchomosci,  
+            };
+            await _context.Ogloszenies.AddAsync(ogloszenie);
+            await _context.SaveChangesAsync();
+            return ogloszenie;
         }
     }
 }

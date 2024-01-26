@@ -49,9 +49,9 @@ namespace Otodom.Repositories
                 LiczbaPieter = NieruchomoscToAdd.LiczbaPieter,
                 RokBudowy = NieruchomoscToAdd.RokBudowy,
                 StanWykonczenia = NieruchomoscToAdd.StanWykonczenia,
-                RodzajOkna = NieruchomoscToAdd.Wojewodztwo,
-                TypOgrzewania = NieruchomoscToAdd.Wojewodztwo,
-                RodzajZabudowy = NieruchomoscToAdd.Wojewodztwo,
+                RodzajOkna = NieruchomoscToAdd.RodzajOkna,
+                TypOgrzewania = NieruchomoscToAdd.TypOgrzewania,
+                RodzajZabudowy = NieruchomoscToAdd.RodzajZabudowy,
             };
             await _context.Nieruchomoscs.AddAsync(nieruchomosc);
             await _context.SaveChangesAsync();
