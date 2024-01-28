@@ -4,8 +4,111 @@
 
 <PageTitle>Kredyty</PageTitle>
 
-<h3>Kredyty</h3>
+<div class="container">
+    <section class="calculator">
+        <div class="controls">
+            <h1>Kalkulator kredytu hipotecznego</h1>
+            <div class="control">
+                <label for="cenaNieruchomosci">Cena nieruchomości:</label>
+                <input type="range" id="cenaNieruchomosci" min="50000" max="8000000" step="10000" @bind="cenaNieruchomosci" @oninput="ZmianaCenyNieruchomosci" />
+                <output for="cenaNieruchomosci">@cenaNieruchomosci.ToString("N0") zł</output>
+            </div>
+            <div class="control">
+                <label for="wkladWlasny">Wkład własny:</label>
+                <input type="range" id="wkladWlasny" min="10" max="90" step="1" @bind="wkladWlasny" @oninput="ZmianaWkladuWlasnego" />
+                <output for="wkladWlasny">@wkladWlasny.ToString("N0") %</output>
+            </div>
+            <div class="control">
+                <label for="okresKredytowania">Okres kredytowania:</label>
+                <input type="range" id="okresKredytowania" min="5" max="35" step="1" @bind="okresKredytowania" @oninput="ZmianaOkresuKredytowania" />
+                <output for="okresKredytowania">@okresKredytowania.ToString("N0") lat</output>
+            </div>
+            <div class="control">
+                <label for="oprocentowanieKredytu">Oprocentowanie kredytu:</label>
+                <input type="range" id="oprocentowanieKredytu" min="1" max="20" step="0.2" @bind="oprocentowanieKredytu" @oninput="ZmianaOprocentowania" />
+                <output for="oprocentowanieKredytu">@oprocentowanieKredytu.ToString("N2") %</output>
+            </div>
+        </div>
+        <div class="results">
+            <div class="result-item">
+                <h2>Rata miesięczna</h2>
+                <p class="value">@rataMiesieczna.ToString("N2") zł</p>
+            </div>
+            <div class="result-item">
+                <h2>Kwota kredytu</h2>
+                <p class="value">@kwotaKredytuDoSplaty.ToString("N2") zł</p>
+            </div>
+            <div class="result-item">
+                <h2>Odsetki</h2>
+                <p class="value">@calkowiteOdsetki.ToString("N2") zł</p>
+            </div>
+        </div>
+    </section>
+    <div class="card">
+        <img src="obrazek-biura.webp" alt="Biuro Nieruchomości" class="card-img">
+        <div class="card-content">
+            <h3>Biuro Nieruchomościowe</h3>
+            <p>Polecamy skorzystać z ekspertów do spraw kredytów.</p>
+            <a href="https://localhost:7085/firmy" class="button">Odwiedź stronę</a>
+        </div>
+    </div>
+</div>
 
 @code {
+    private int cenaNieruchomosci = 920000;
+    private int wkladWlasny = 20; // W procentach
+    private int okresKredytowania = 30; // W latach
+    private decimal oprocentowanieKredytu = 6.85m; // W procentach
+    private decimal kwotaKredytuDoSplaty;
+    private decimal rataMiesieczna;
+    private decimal calkowiteOdsetki;
 
+    private void ZmianaCenyNieruchomosci(ChangeEventArgs e)
+    {
+        if (int.TryParse(e.Value.ToString(), out int wynik))
+        {
+            cenaNieruchomosci = wynik;
+            ObliczKredyt();
+        }
+    }
+
+    private void ZmianaWkladuWlasnego(ChangeEventArgs e)
+    {
+        if (int.TryParse(e.Value.ToString(), out int wynik))
+        {
+            wkladWlasny = wynik;
+            ObliczKredyt();
+        }
+    }
+
+    private void ZmianaOkresuKredytowania(ChangeEventArgs e)
+    {
+        if (int.TryParse(e.Value.ToString(), out int wynik))
+        {
+            okresKredytowania = wynik;
+            ObliczKredyt();
+        }
+    }
+
+    private void ZmianaOprocentowania(ChangeEventArgs e)
+    {
+        if (decimal.TryParse(e.Value.ToString(), out decimal wynik))
+        {
+            oprocentowanieKredytu = wynik;
+            ObliczKredyt();
+        }
+    }
+
+    private void ObliczKredyt()
+    {
+        decimal kwotaPozyczki = cenaNieruchomosci - (cenaNieruchomosci * wkladWlasny / 100m);
+        decimal miesiecznaStopaProcentowa = oprocentowanieKredytu / 12 / 100;
+        int iloscRat = okresKredytowania * 12;
+
+        rataMiesieczna = (kwotaPozyczki * miesiecznaStopaProcentowa) / (1 - (decimal)Math.Pow(1 + (double)miesiecznaStopaProcentowa, -iloscRat));
+        kwotaKredytuDoSplaty = rataMiesieczna * iloscRat;
+        calkowiteOdsetki = kwotaKredytuDoSplaty - kwotaPozyczki;
+
+        StateHasChanged();
+    }
 }

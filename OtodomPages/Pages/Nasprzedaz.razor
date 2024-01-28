@@ -1,18 +1,73 @@
 ﻿@page "/nasprzedaz"
+@inject HttpClient Http
 
 <PageTitle>Na sprzedaż</PageTitle>
 
 <h1>Counter</h1>
 
-<p role="status">Current count: @currentCount</p>
+<select @onchange="OnCurrencyChange">
+    <option value="eur">Euro (EUR)</option>
+    <option value="usd">Dolar amerykański (USD)</option>
+    <option value="gbp">Funt brytyjski (GBP)</option>
+</select>
 
-<button class="btn btn-primary" @onclick="IncrementCount">Click me</button>
+<p> Kwota: @kwota </p>
 
 @code {
-    private int currentCount = 0;
+    private decimal kwota = 4;
+    private decimal exchangeRate = 1;
+    private string selectedCurrency = "eur";
 
-    private void IncrementCount()
+    protected override async Task OnInitializedAsync()
     {
-        currentCount++;
+        await FetchExchangeRate(selectedCurrency);
+    }
+
+    private async Task OnCurrencyChange(ChangeEventArgs e)
+    {
+        selectedCurrency = e.Value.ToString();
+        await FetchExchangeRate(selectedCurrency);
+        PrzeliczWalute(); // Przeliczanie odbywa się automatycznie po zmianie waluty
+    }
+
+    private async Task FetchExchangeRate(string currencyCode)
+    {
+        string url = currencyCode switch
+        {
+            "eur" => "https://api.nbp.pl/api/exchangerates/rates/a/eur/?format=json",
+            "usd" => "https://api.nbp.pl/api/exchangerates/rates/a/usd/?format=json",
+            "gbp" => "https://api.nbp.pl/api/exchangerates/rates/a/gbp/?format=json",
+            _ => throw new InvalidOperationException("Nieznany kod waluty")
+        };
+
+        try
+        {
+            var response = await Http.GetFromJsonAsync<NbpApiResponse>(url);
+            exchangeRate = response?.Rates.FirstOrDefault()?.Mid ?? 1;
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Wystąpił błąd: {ex.Message}");
+        }
+    }
+
+    private void PrzeliczWalute()
+    {
+        kwota = 4 * exchangeRate; // Zakładam, że zawsze przeliczasz tę samą początkową kwotę
+    }
+
+    private class NbpApiResponse
+    {
+        public string Table { get; set; }
+        public string Currency { get; set; }
+        public string Code { get; set; }
+        public List<Rate> Rates { get; set; }
+    }
+
+    private class Rate
+    {
+        public string No { get; set; }
+        public string EffectiveDate { get; set; }
+        public decimal Mid { get; set; }
     }
 }

@@ -24,7 +24,7 @@ namespace Otodom.Services
             if (!Klient.Any())
                 throw new Exception("Nie ma żadnego klienta.");
             return Klient;
-        }
+        } 
 
         public async Task<Klient> PostKlient(KlientRequest KlientToAdd)
         {

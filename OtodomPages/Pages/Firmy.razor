@@ -1,57 +1,85 @@
 ﻿@page "/firmy"
-@inject HttpClient Http
+@inject HttpClient httpClient
+@using DTO
+@inherits LayoutComponentBase
 
 <PageTitle>Firmy</PageTitle>
 
-<h1>Weather</h1>
+<h1>Biura nieruchomościowe</h1>
 
-<p>This component demonstrates fetching data from the server.</p>
+<p>Lista polecanych biur nieruchomości</p>
+@if (data != null)
+@* {
+    <ul>
+        @foreach (var agencja in data)
+        {
+            <li>@agencja.NazwaAgencji @agencja.Nip @agencja.NrTelefonuAgencji @agencja.IdAgencji</li>
 
-@if (forecasts == null)
+        }
+    </ul>
+} *@
 {
-    <p><em>Loading...</em></p>
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <table class="table table-image">
+                    <thead>
+                        <tr>
+                            <th scope="col">Zdjęcie</th>
+                            <th scope="col">Nazwa Agencji</th>
+                            <th scope="col">NIP</th>
+                            <th scope="col">Nr Telefonu Agencji</th>
+                            <th scope="col">Email Agencji</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var agencja in data)
+                        {
+                            <tr>
+                                <td class="w-25">
+                                    @{
+                                        // Utwórz nazwę pliku dla obrazu
+                                        var imageFileName = $"firma{agencja.IdAgencji}.webp";
+                                    }
+                                    <img src="@($"{imageFileName}")" class="img-fluid img-thumbnail" alt="Agencja Image">
+                                </td>
+                                <td>@agencja.NazwaAgencji</td>
+                                <td>@agencja.Nip</td>
+                                <td>@agencja.NrTelefonuAgencji</td>
+                                <td>@agencja.Email</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
 }
 else
 {
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Date</th>
-                <th>Temp. (C)</th>
-                <th>Temp. (F)</th>
-                <th>Summary</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var forecast in forecasts)
-            {
-                <tr>
-                    <td>@forecast.Date.ToShortDateString()</td>
-                    <td>@forecast.TemperatureC</td>
-                    <td>@forecast.TemperatureF</td>
-                    <td>@forecast.Summary</td>
-                </tr>
-            }
-        </tbody>
-    </table>
+    <p>Loading...</p>
 }
 
+
+
 @code {
-    private WeatherForecast[]? forecasts;
+    private List<Agencja> data;
+
+
 
     protected override async Task OnInitializedAsync()
     {
-        forecasts = await Http.GetFromJsonAsync<WeatherForecast[]>("sample-data/weather.json");
-    }
+        var apiUrl = "https://localhost:7144/agencjas";
 
-    public class WeatherForecast
-    {
-        public DateOnly Date { get; set; }
-
-        public int TemperatureC { get; set; }
-
-        public string? Summary { get; set; }
-
-        public int TemperatureF => 32 + (int)(TemperatureC / 0.5556);
+        try
+        {
+            data = await httpClient.GetFromJsonAsync<List<Agencja>>(apiUrl);
+        }
+        catch (Exception ex)
+        {
+            // Handle the exception
+            Console.WriteLine($"Error: {ex.Message}");
+        }
     }
 }
