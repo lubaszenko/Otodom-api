@@ -24,6 +24,7 @@ namespace Otodom.Repositories
             return await _context.Ogloszenies
                 .Include(n => n.NieruchomoscIdNieruchomosciNavigation)
                 .Include(n => n.NieruchomoscIdNieruchomosciNavigation.Zdjecies)
+                .Include(m => m.KlientIdKlientaNavigation)
                 .ToListAsync();
         }
         public async Task<Ogloszenie> DeleteOgloszenies(Ogloszenie OgloszenieToDelete)

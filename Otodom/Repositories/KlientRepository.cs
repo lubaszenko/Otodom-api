@@ -15,7 +15,9 @@ namespace Otodom.Repositories
 
         public async Task<List<Klient>> GetKlient()
         {
-            return await _context.Klients.ToListAsync();
+            return await _context.Klients
+                .Include(b => b.AgencjaIdAgencjiNavigation)
+                .ToListAsync();
         }
 
         public async Task<Klient> PostKlient(KlientRequest KlientToAdd)
