@@ -26,6 +26,19 @@ namespace Otodom.Controllers
                 return NotFound(ex.Message);
             }
         }
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetOgloszenie(int id)
+        {
+            try
+            {
+                var ogloszenies = await _ogloszenieService.GetOgloszenie(id);
+                return Ok(ogloszenies);
+            }
+            catch (Exception ex)
+            {
+                return NotFound(ex.Message);
+            }
+        }
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteOgloszenies(int id)
         {
@@ -45,7 +58,7 @@ namespace Otodom.Controllers
             try
             {
                 var ogloszenies = await _ogloszenieService.PostOgloszenie(OgloszenieToAdd);
-                return Ok(ogloszenies); 
+                return Ok(ogloszenies);
             }
             catch (Exception ex)
             {

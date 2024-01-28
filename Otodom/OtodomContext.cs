@@ -4,6 +4,8 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Otodom.Models;
 
+namespace Otodom
+{
     public partial class OtodomContext : DbContext
     {
         public OtodomContext()
@@ -218,7 +220,10 @@ using Otodom.Models;
 
                 entity.Property(e => e.NieruchomoscIdNieruchomosci).HasColumnName("nieruchomosc_ID_nieruchomosci");
 
-                entity.Property(e => e.ZdjecieData).HasColumnName("zdjecie_data");
+                entity.Property(e => e.ZdjecieData)
+                    .HasMaxLength(255)
+                    .IsUnicode(false)
+                    .HasColumnName("zdjecie_data");
 
                 entity.HasOne(d => d.NieruchomoscIdNieruchomosciNavigation)
                     .WithMany(p => p.Zdjecies)
@@ -232,4 +237,4 @@ using Otodom.Models;
 
         partial void OnModelCreatingPartial(ModelBuilder modelBuilder);
     }
-
+}

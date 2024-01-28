@@ -6,8 +6,9 @@ namespace Otodom.Services
 {
     public interface INieruchomoscService
     {
-        public Task<Nieruchomosc> GetNieruchomoscs(int id);
-        public Task<List<Nieruchomosc>> GetNieruchomoscsWithPhotos();
+        public Task<NieruchomoscResponse> GetNieruchomoscs(int id);
+        public Task<Nieruchomosc> GetNieruchomosc(int id);
+        public Task<List<NieruchomoscResponse>> GetNieruchomoscsWithPhotos();
 
         /*public Task<Nieruchomosc> GetNieruchomoscs(string miasto);*/
         public Task<Nieruchomosc> PostNieruchomosc(NieruchomoscRequest NieruchomoscToAdd);
@@ -22,17 +23,17 @@ namespace Otodom.Services
             _nieruchomoscRepository = nieruchomoscRepository;
         }
 
-        public async Task<Nieruchomosc> GetNieruchomoscs(int id)
+        public async Task<NieruchomoscResponse> GetNieruchomoscs(int id)
         {
             if (id <= 0)
                 throw new Exception("Podałeś ujemne id.");
             var Nieruchomosc = await _nieruchomoscRepository.GetNieruchomoscs(id);
-            if (Nieruchomosc == null) 
+            if (Nieruchomosc == null)
                 throw new Exception(String.Format("Nie ma żadnej nieruchomości o id {0}.", id));
             return Nieruchomosc;
         }
 
-        public async Task<List<Nieruchomosc>> GetNieruchomoscsWithPhotos()
+        public async Task<List<NieruchomoscResponse>> GetNieruchomoscsWithPhotos()
         {
             var Nieruchomosci = await _nieruchomoscRepository.GetNieruchomoscsWithPhotos();
             if (!Nieruchomosci.Any())
@@ -70,9 +71,17 @@ namespace Otodom.Services
         {
             if (id <= 0)
                 throw new Exception("Podałeś ujemne id.");
-            var NieruchomoscToDelete = await GetNieruchomoscs(id);
+            var NieruchomoscToDelete = await GetNieruchomosc(id);
             await _nieruchomoscRepository.DeleteNieruchomoscs(NieruchomoscToDelete);
             return NieruchomoscToDelete;
+        }
+
+        public async Task<Nieruchomosc> GetNieruchomosc(int id)
+        {
+            var Nieruchomosc = await _nieruchomoscRepository.GetNieruchomosc(id);
+            if (Nieruchomosc == null)
+                throw new Exception(String.Format("Nie ma żadnej nieruchomości o id {0}.", id));
+            return Nieruchomosc;
         }
     }
 }

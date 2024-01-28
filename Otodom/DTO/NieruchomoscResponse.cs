@@ -2,6 +2,7 @@
 {
     public class NieruchomoscResponse
     {
+        public int Id { get; set; }
         public string Wojewodztwo { get; set; } = null!;
         public string Miasto { get; set; } = null!;
         public decimal KodPocztowy { get; set; }
@@ -14,5 +15,6 @@
         public string RodzajOkna { get; set; } = null!;
         public string TypOgrzewania { get; set; } = null!;
         public string RodzajZabudowy { get; set; } = null!;
+        public List<ZdjecieResponse> Zdjecia {get; set; } = null;
     }
 }

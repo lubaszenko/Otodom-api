@@ -6,10 +6,9 @@ namespace Otodom.Repositories
 {
     public interface INieruchomoscRepository
     {
-        public Task<List<Nieruchomosc>> GetNieruchomoscsWithPhotos();
-        public Task<Nieruchomosc> GetNieruchomoscs(int id);
-
-        /*public Task<Nieruchomosc> GetNieruchomoscs(string miasto);*/
+        public Task<List<NieruchomoscResponse>> GetNieruchomoscsWithPhotos();
+        public Task<NieruchomoscResponse> GetNieruchomoscs(int id);
+        public Task<Nieruchomosc> GetNieruchomosc(int id);
         public Task<Nieruchomosc> PostNieruchomosc(NieruchomoscRequest NieruchomoscToAdd);
         public Task<Nieruchomosc> DeleteNieruchomoscs(Nieruchomosc NieruchomoscToDelete);
     }
@@ -22,19 +21,57 @@ namespace Otodom.Repositories
             _context = context;
         }
 
-        public async Task<Nieruchomosc> GetNieruchomoscs(int id)
+        public async Task<NieruchomoscResponse> GetNieruchomoscs(int id)
         {
-            return await _context.Nieruchomoscs.Where(b => b.IdNieruchomosci == id).FirstOrDefaultAsync();
+            return await _context.Nieruchomoscs
+                .Include(b => b.Zdjecies)
+                .Select(b => new NieruchomoscResponse
+                {
+                    Id = b.IdNieruchomosci,
+                    Wojewodztwo = b.Wojewodztwo,
+                    Miasto = b.Miasto,
+                    KodPocztowy = b.KodPocztowy,
+                    Ulica = b.Ulica,
+                    NrDomu = b.NrDomu,
+                    PowierzchniaDomu = b.PowierzchniaDomu,
+                    LiczbaPieter = b.LiczbaPieter,
+                    RokBudowy = b.RokBudowy,
+                    StanWykonczenia = b.StanWykonczenia,
+                    RodzajOkna = b.RodzajOkna,
+                    TypOgrzewania = b.TypOgrzewania,
+                    RodzajZabudowy = b.RodzajZabudowy,
+                    Zdjecia = b.Zdjecies.Select(z => new ZdjecieResponse
+                    {
+                        Zdjecie = z.ZdjecieData
+                    }).ToList()
+                })
+                .Where(b => b.Id == id).FirstOrDefaultAsync();
         }
 
-        public async Task<List<Nieruchomosc>> GetNieruchomoscsWithPhotos()
+        public async Task<List<NieruchomoscResponse>> GetNieruchomoscsWithPhotos()
         {
-            return await _context.Nieruchomoscs.Include(n => n.Zdjecies).ToListAsync();
+            return await _context.Nieruchomoscs.Include(n => n.Zdjecies)
+                .Select(b => new NieruchomoscResponse
+            {
+                Id = b.IdNieruchomosci,
+                Wojewodztwo = b.Wojewodztwo,
+                Miasto = b.Miasto,
+                KodPocztowy = b.KodPocztowy,
+                Ulica = b.Ulica,
+                NrDomu = b.NrDomu,
+                PowierzchniaDomu = b.PowierzchniaDomu,
+                LiczbaPieter = b.LiczbaPieter,
+                RokBudowy = b.RokBudowy,
+                StanWykonczenia = b.StanWykonczenia,
+                RodzajOkna = b.RodzajOkna,
+                TypOgrzewania = b.TypOgrzewania,
+                RodzajZabudowy = b.RodzajZabudowy,
+                Zdjecia = b.Zdjecies.Select(z => new ZdjecieResponse
+                {
+                    Zdjecie = z.ZdjecieData
+                }).ToList()
+            }).ToListAsync();
         }
-        /*public async Task<Nieruchomosc> GetNieruchomoscs(string miasto)
-        {
-            return await _context.Nieruchomoscs.Where(a => a.Miasto == miasto).FirstOrDefaultAsync();
-        }*/
 
         public async Task<Nieruchomosc> PostNieruchomosc(NieruchomoscRequest NieruchomoscToAdd)
         {
@@ -63,6 +100,11 @@ namespace Otodom.Repositories
             _context.Nieruchomoscs.Remove(NieruchomoscToDelete);
             await _context.SaveChangesAsync();
             return NieruchomoscToDelete;
+        }
+
+        public async Task<Nieruchomosc> GetNieruchomosc(int id)
+        {
+            return await _context.Nieruchomoscs.Where(b => b.IdNieruchomosci == id).FirstOrDefaultAsync();
         }
     }
 }

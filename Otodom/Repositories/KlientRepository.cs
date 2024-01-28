@@ -6,17 +6,28 @@ namespace Otodom.Repositories
 {
     public interface IKlientRepository
     {
-        public Task<List<Klient>> GetKlient();
+        public Task<List<KlientResponse>> GetKlient();
         public Task<Klient> PostKlient(KlientRequest KlientToAdd);
     }
     public class KlientRepository : IKlientRepository
     {
         private readonly OtodomContext _context;
-
-        public async Task<List<Klient>> GetKlient()
+        public KlientRepository(OtodomContext context)
         {
-            return await _context.Klients
-                .Include(b => b.AgencjaIdAgencjiNavigation)
+            _context = context;
+        }
+        public async Task<List<KlientResponse>> GetKlient()
+        {
+            return await _context.Klients.Include(b => b.AgencjaIdAgencjiNavigation)
+                .Select (b => new KlientResponse
+                {
+                    IdKlienta = b.IdKlienta,
+                    Imie = b.Imie,
+                    Nazwisko = b.Nazwisko,
+                    Email = b.Email,
+                    NrTelefonuKlienta = b.NrTelefonuKlienta,
+                    NazwaAgencji = b.AgencjaIdAgencjiNavigation.NazwaAgencji
+                })
                 .ToListAsync();
         }
 

@@ -15,6 +15,8 @@ builder.Services.AddScoped<IOgloszenieRepository, OgloszenieRepository>();
 builder.Services.AddScoped<IOgloszenieService, OgloszenieService>();
 builder.Services.AddScoped<IKlientRepository, KlientRepository>();
 builder.Services.AddScoped<IKlientService, KlientService>();
+builder.Services.AddScoped<IZdjecieRepository, ZdjecieRepository>();
+builder.Services.AddScoped<IZdjecieService, ZdjecieService>();
 
 builder.Services.AddSwaggerGen();
 
