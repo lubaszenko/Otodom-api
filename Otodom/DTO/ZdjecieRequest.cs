@@ -2,6 +2,7 @@
 {
     public class ZdjecieRequest
     {
-        public byte[]? ZdjecieData { get; set; }
+        public string Zdjecie { get; set; }
+        public int IdNieruchomosci { get; set; }
     }
 }

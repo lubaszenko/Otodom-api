@@ -8,6 +8,7 @@ namespace Otodom.Repositories
     {
         public Task<List<OgloszenieResponse>> GetOgloszenie();
         public Task<OgloszenieResponse> GetOgloszenie(int id);
+        public Task<Ogloszenie> GetOgloszenieModel(int id);
         public Task<Ogloszenie> DeleteOgloszenies(Ogloszenie OgloszenieToDelete);
         public Task<Ogloszenie> PostOgloszenie(OgloszenieRequest OgloszenieToAdd);
     }
@@ -29,6 +30,7 @@ namespace Otodom.Repositories
                 .GroupBy(n => n.IdOgloszenia)
                 .Select(group => new OgloszenieResponse
                 {
+                    Id = group.First().IdOgloszenia,
                     Tytul = group.First().Tytul,
                     DataDodania = group.First().DataDodania,
                     Status = group.First().Status,
@@ -96,6 +98,7 @@ namespace Otodom.Repositories
                 .Where(n => n.IdOgloszenia == id)
                 .Select(n => new OgloszenieResponse
                 {
+                    Id = n.IdOgloszenia,
                     Tytul = n.Tytul,
                     DataDodania = n.DataDodania,
                     Status = n.Status,
@@ -128,6 +131,11 @@ namespace Otodom.Repositories
                     }).ToList()
                     }
                 }).FirstOrDefaultAsync();
+        }
+
+        public async Task<Ogloszenie> GetOgloszenieModel(int id)
+        {
+            return await _context.Ogloszenies.Where(o => o.IdOgloszenia == id).FirstOrDefaultAsync();
         }
     }
 }

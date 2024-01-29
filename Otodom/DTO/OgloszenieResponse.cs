@@ -2,6 +2,7 @@
 {
     public class OgloszenieResponse
     {
+        public int Id { get; set; }
         public string Tytul { get; set; } = null!;
         public DateTime DataDodania { get; set; }
         public bool Status { get; set; }

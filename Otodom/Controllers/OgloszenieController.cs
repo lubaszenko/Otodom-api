@@ -65,5 +65,18 @@ namespace Otodom.Controllers
                 return NotFound(ex.Message);
             }
         }
+        [HttpPost("nieruchomosc")]
+        public async Task<IActionResult> PostOgloszenie(Ogloszenieznieruchomoscia OgloszenieToAdd)
+        {
+            try
+            {
+                var ogloszenies = await _ogloszenieService.PostOgloszenieznieruchomoscia(OgloszenieToAdd);
+                return Ok(ogloszenies);
+            }
+            catch (Exception ex)
+            {
+                return NotFound(ex.Message);
+            }
+        }
     }
 }
