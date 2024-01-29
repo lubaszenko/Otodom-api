@@ -1,5 +1,6 @@
 ﻿@page "/nasprzedaz"
 @inject HttpClient Http
+@using Otodom.DTO
 
 <PageTitle>Na sprzedaż</PageTitle>
 
@@ -12,6 +13,17 @@
 </select>
 
 <p> Kwota: @kwota </p>
+
+<footer>
+    <div class="container">
+        <p>&copy; 2024 HouseHolding.pl, Grupa HouseHolding sp. z o.o.</p>
+        <p>
+            <a href="https://poradnikprzedsiebiorcy.pl/warunki-wspolpracy">WARUNKI WSPÓŁPRACY</a>
+            <a href="https://policies.google.com/privacy?hl=pl">POLITYKA PRYWATNOŚCI</a>
+            <a href="https://support.google.com/accounts/answer/61416?hl=pl&co=GENIE.Platform%3DAndroid">USTAWIENIA PLIKÓW COOKIE</a>
+        </p>
+    </div>
+</footer>
 
 @code {
     private decimal kwota = 4;

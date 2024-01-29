@@ -1,26 +1,4 @@
-﻿.container {
-    padding: 2rem 0rem;
-}
-
-h4 {
-    margin: 2rem 0rem 1rem;
-}
-
-.table-image td,
-.table-image th {
-    vertical-align: middle;
-}
-
-.table-image tr:nth-child(even) {
-    background-color: #f2f2f2; /* Kolor tła dla co drugiego wiersza */
-}
-
-.table-image img {
-    width: 350px; /* Ustaw tu pożądaną szerokość */
-    height: auto; /* Zachowaj proporcje */
-}
-
-footer {
+﻿footer {
     background-color: #f2f2f2;
     padding: 10px 0;
     text-align: center;

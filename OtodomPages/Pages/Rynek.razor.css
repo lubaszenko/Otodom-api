@@ -1,0 +1,128 @@
+﻿.photo-gallery .photo {
+    max-width: 100%; /* Ogranicza szerokość zdjęcia do 100% kontenera */
+    height: auto; /* Zachowuje proporcje zdjęcia */
+    margin-bottom: 15px; /* Dodaje odstęp pomiędzy zdjęciami */
+}
+
+footer {
+    background-color: #f2f2f2;
+    padding: 10px 0;
+    text-align: center;
+    margin-top: 20px;
+}
+
+footer p {
+    margin: 0;
+    padding: 5px;
+    color: #333; /* Jasno-szary kolor tekstu */
+}
+
+footer a {
+    margin-right: 10px;
+    color: #333; /* Jasno-szary kolor tekstu */
+    text-decoration: none;
+}
+
+    footer a:hover {
+        text-decoration: underline;
+    }
+
+.why-housholding {
+    text-align: center;
+    background: white;
+    padding: 20px;
+}
+
+    .why-housholding .container {
+        max-width: 1200px;
+        margin: 0 auto;
+    }
+
+    .why-housholding h2 {
+        margin-bottom: 20px;
+    }
+
+    .why-housholding p {
+        margin-bottom: 40px;
+    }
+
+.cards {
+    display: flex;
+    justify-content: space-around;
+}
+
+.card {
+    width: 30%;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    margin-bottom: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.card-container {
+    display: flex; 
+    align-items: stretch; 
+}
+
+.card img {
+    width: 100%; 
+    height: auto; 
+    object-fit: cover;
+}
+
+.card-content {
+    padding: 20px;
+}
+
+.card-icon {
+    display: inline-block;
+    padding: 10px;
+    color: white;
+    font-weight: bold;
+    margin-bottom: 20px;
+}
+
+.card-content p {
+    text-align: left;
+    color: grey;
+    margin-bottom: 20px;
+}
+
+button {
+    background-color: #4CAF50; 
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    text-transform: uppercase;
+    margin: 0 auto;
+    display: block;
+    cursor: pointer;
+}
+
+    button:hover {
+        background-color: darken(#4CAF50, 10%); /* Ciemniejszy odcień zielonego przy najechaniu */
+    }
+
+.button-container {
+    box-sizing: border-box; /* Zapewnia, że padding i border są wliczane do szerokości elementu */
+    padding: 10px; /* Odpowiedni odstęp wewnątrz kontenera przycisku */
+}
+
+.button {
+    max-width: 100%; /* Maksymalna szerokość przycisku nie przekracza kontenera */
+    width: auto; /* Szerokość dostosowuje się do zawartości przycisku */
+    margin: 0; /* Brak zewnętrznego odstępu dla przycisku */
+    padding: 10px 20px; /* Odpowiedni odstęp wewnątrz przycisku */
+}
+
+@media (max-width: 768px) {
+    .card-container {
+        flex-direction: column;
+    }
+
+    .card {
+        width: 100%; /* Karty na pełną szerokość na mniejszych ekranach */
+    }
+}
+

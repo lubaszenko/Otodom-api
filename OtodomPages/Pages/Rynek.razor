@@ -1,0 +1,51 @@
+﻿@page "/rynek"
+@inject HttpClient httpClient
+@using Otodom.DTO
+
+<PageTitle>Rynek</PageTitle>
+
+<section class="why-housholding">
+    <div class="container">
+        <h2>Dlaczego HouseHolding?</h2>
+        <p>Dysponujemy największą bazą ogłoszeń nieruchomości w Polsce. Badamy preferencje, analizujemy dane i pomagamy zrozumieć rynek nieruchomości.</p>
+        <div class="cards">
+            <div class="card">
+                <img src="buy.webp" alt="Kup nieruchomość">
+                <div class="card-content">
+                    <p>Znajdź wymarzoną nieruchomość. Przeglądaj setki ogłoszeń domów, mieszkań, działek, lokali inwestycyjnych i innych nieruchomości, których nie znajdziesz nigdzie indziej.</p>
+                    <button>Przeglądaj ogłoszenia</button>
+                </div>
+            </div>
+            <div class="card">
+                <img src="sell.webp" alt="Sprzedaj nieruchomość">
+                <div class="card-content">
+                    <p>Niezależnie od tego, czy postanowisz sprzedać sam, czy ze wsparciem agenta nieruchomości, pomożemy ci przejść przez ten proces szybko i sprawnie. Sprawdź możliwości!</p>
+                    <button>Dodaj ogłoszenie</button>
+                </div>
+            </div>
+            <div class="card">
+                <img src="rent.webp" alt="Wynajmij nieruchomość">
+                <div class="card-content">
+                    <p>Odkryj zalety wynajmowania. Sprawdź oferty mieszkań i domów na wynajem, a my podpowiemy ci jak wybrać najlepszą i odnaleźć się w relacji najemca - wynajmujący.</p>
+                    <button>Wynajmij nieruchomość</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+<footer>
+    <div class="container">
+        <p>&copy; 2024 HouseHolding.pl, Grupa HouseHolding sp. z o.o.</p>
+        <p>
+            <a href="https://poradnikprzedsiebiorcy.pl/warunki-wspolpracy">WARUNKI WSPÓŁPRACY</a>
+            <a href="https://policies.google.com/privacy?hl=pl">POLITYKA PRYWATNOŚCI</a>
+            <a href="https://support.google.com/accounts/answer/61416?hl=pl&co=GENIE.Platform%3DAndroid">USTAWIENIA PLIKÓW COOKIE</a>
+        </p>
+    </div>
+</footer>
+
+@code {
+    
+}

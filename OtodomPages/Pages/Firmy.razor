@@ -1,6 +1,6 @@
 ﻿@page "/firmy"
 @inject HttpClient httpClient
-@using DTO
+@using Otodom.DTO
 @inherits LayoutComponentBase
 
 <PageTitle>Firmy</PageTitle>
@@ -9,15 +9,7 @@
 
 <p>Lista polecanych biur nieruchomości</p>
 @if (data != null)
-@* {
-    <ul>
-        @foreach (var agencja in data)
-        {
-            <li>@agencja.NazwaAgencji @agencja.Nip @agencja.NrTelefonuAgencji @agencja.IdAgencji</li>
 
-        }
-    </ul>
-} *@
 {
     <div class="container">
         <div class="row">
@@ -61,19 +53,26 @@ else
     <p>Loading...</p>
 }
 
-
+<footer>
+    <div class="container">
+        <p>&copy; 2024 HouseHolding.pl, Grupa HouseHolding sp. z o.o.</p>
+        <p>
+            <a href="https://poradnikprzedsiebiorcy.pl/warunki-wspolpracy">WARUNKI WSPÓŁPRACY</a>
+            <a href="https://policies.google.com/privacy?hl=pl">POLITYKA PRYWATNOŚCI</a>
+            <a href="https://support.google.com/accounts/answer/61416?hl=pl&co=GENIE.Platform%3DAndroid">USTAWIENIA PLIKÓW COOKIE</a>
+        </p>
+    </div>
+</footer>
 
 @code {
-    private List<Agencja> data;
+    private List<AgencjaResponse> data;
 
     protected override async Task OnInitializedAsync()
     {
-        var apiUrl = "https://localhost:7144/agencjas";
-
         try
         {
-            data = await httpClient.GetFromJsonAsync<List<Agencja>>(apiUrl);
-        }
+            data = await httpClient.GetFromJsonAsync<List<AgencjaResponse>>("https://localhost:7144/agencjas");
+    }
         catch (Exception ex)
         {
             // Handle the exception

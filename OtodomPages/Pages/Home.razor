@@ -1,44 +1,88 @@
 ﻿@page "/"
 @inject HttpClient httpClient
-@using DTO
-
+@using Otodom.DTO
 
 <PageTitle>Strona główna</PageTitle>
 
-<h3>Dane agencji</h3>
+<h3>Ogłoszenia</h3>
 
-<p>Agencje:</p>
+<p>Na sprzedaż:</p>
 
-@if (data != null)
+@if (ogloszenia != null && ogloszenia.Any())
 {
-    <ul>
-        @foreach (var agencja in data)
+    <div>
+        @foreach (var ogloszenie in ogloszenia)
         {
-            <li>@agencja.NazwaAgencji @agencja.Nip @agencja.NrTelefonuAgencji @agencja.IdAgencji</li>
-
+            <div>
+                <h4>@ogloszenie.Tytul</h4>
+                <p>ID: @ogloszenie.Id</p>
+                <p>Dodano: @ogloszenie.DataDodania.ToString("d")</p>
+                <p>Status: @(ogloszenie.Status ? "Aktywne" : "Nieaktywne")</p>
+                <p>Opis: @ogloszenie.Opis</p>
+                <p>Cena: @ogloszenie.Cena.ToString("C")</p>
+                <p>Klient ID: @ogloszenie.KlientIdKlienta</p>
+                <p>Klient: @ogloszenie.ImieKlienta @ogloszenie.NazwiskoKlienta</p>
+                <p>Email: @ogloszenie.Email</p>
+                <p>Telefon: @ogloszenie.Telefon</p>
+                <h5>Nieruchomość:</h5>
+                <p>Województwo: @ogloszenie.Nieruchomosc.Wojewodztwo</p>
+                <p>Miasto: @ogloszenie.Nieruchomosc.Miasto</p>
+                <p>Kod pocztowy: @ogloszenie.Nieruchomosc.KodPocztowy</p>
+                <p>Ulica: @ogloszenie.Nieruchomosc.Ulica</p>
+                <p>Nr domu: @ogloszenie.Nieruchomosc.NrDomu</p>
+                <p>Powierzchnia: @ogloszenie.Nieruchomosc.PowierzchniaDomu m²</p>
+                <p>Liczba pięter: @ogloszenie.Nieruchomosc.LiczbaPieter</p>
+                <p>Rok budowy: @ogloszenie.Nieruchomosc.RokBudowy</p>
+                <p>Stan wykonczenia: @ogloszenie.Nieruchomosc.StanWykonczenia</p>
+                <p>Rodzaj okna: @ogloszenie.Nieruchomosc.RodzajOkna</p>
+                <p>Typ ogrzewania: @ogloszenie.Nieruchomosc.TypOgrzewania</p>
+                <p>Rodzaj zabudowy: @ogloszenie.Nieruchomosc.RodzajZabudowy</p>
+                <h5>Zdjęcia:</h5>
+                @if (ogloszenie.Nieruchomosc.Zdjecia != null && ogloszenie.Nieruchomosc.Zdjecia.Any())
+                {
+                    <div>
+                        @foreach (var zdjecie in ogloszenie.Nieruchomosc.Zdjecia)
+                        {
+                            <img src="@zdjecie.Zdjecie" alt="Zdjęcie nieruchomości" style="max-width: 200px; max-height: 200px;"/>
+                        }
+                    </div>
+                }
+                else
+                {
+                    <p>Brak zdjęć.</p>
+                }
+            </div>
         }
-    </ul>
+    </div>
 }
 else
 {
-    <p>Loading...</p>
+    <p>Brak ogłoszeń do wyświetlenia.</p>
 }
 
+<footer>
+    <div class="container">
+        <p>&copy; 2024 HouseHolding.pl, Grupa HouseHolding sp. z o.o.</p>
+        <p>
+            <a href="https://poradnikprzedsiebiorcy.pl/warunki-wspolpracy">WARUNKI WSPÓŁPRACY</a>
+            <a href="https://policies.google.com/privacy?hl=pl">POLITYKA PRYWATNOŚCI</a>
+            <a href="https://support.google.com/accounts/answer/61416?hl=pl&co=GENIE.Platform%3DAndroid">USTAWIENIA PLIKÓW COOKIE</a>
+        </p>
+    </div>
+</footer>
+
 @code {
-    private List<Agencja> data;
+    private List<OgloszenieResponse> ogloszenia;
 
     protected override async Task OnInitializedAsync()
     {
-        var apiUrl = "https://localhost:7144/agencjas";
-
         try
         {
-            data = await httpClient.GetFromJsonAsync<List<Agencja>>(apiUrl);
+            ogloszenia = await httpClient.GetFromJsonAsync<List<OgloszenieResponse>>("https://localhost:7144/ogloszenies");
         }
         catch (Exception ex)
         {
-            // Handle the exception
-            Console.WriteLine($"Error: {ex.Message}");
+            Console.WriteLine($"Błąd: {ex.Message}");
         }
     }
 }

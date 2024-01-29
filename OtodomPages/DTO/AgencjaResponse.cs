@@ -1,9 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-
-namespace DTO
+﻿namespace Otodom.DTO
 {
-    public partial class Agencja
+    public class AgencjaResponse
     {
         public int IdAgencji { get; set; }
         public string NazwaAgencji { get; set; } = null!;
