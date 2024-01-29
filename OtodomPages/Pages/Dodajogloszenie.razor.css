@@ -1,0 +1,85 @@
+﻿footer {
+    background-color: #f2f2f2;
+    padding: 10px 0;
+    text-align: center;
+    margin-top: 20px;
+}
+
+    footer p {
+        margin: 0;
+        padding: 5px;
+        color: #333; /* Jasno-szary kolor tekstu */
+    }
+
+    footer a {
+        margin-right: 10px;
+        color: #333; /* Jasno-szary kolor tekstu */
+        text-decoration: none;
+    }
+
+        footer a:hover {
+            text-decoration: underline;
+        }
+
+.form-group {
+    margin-bottom: 1rem;
+}
+
+label {
+    display: block;
+    margin-bottom: .5rem;
+}
+
+.form-control {
+    width: 100%;
+    padding: .375rem .75rem;
+    font-size: 1rem;
+    line-height: 1.5;
+    color: #495057;
+    background-color: #fff;
+    background-clip: padding-box;
+    border: 1px solid #ced4da;
+    border-radius: .25rem;
+    transition: border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+}
+
+.btn {
+    color: #fff;
+    background-color: #007bff;
+    border-color: #007bff;
+    padding: .375rem .75rem;
+    font-size: 1rem;
+    line-height: 1.5;
+    border-radius: .25rem;
+    cursor: pointer;
+}
+
+.btn-primary:hover {
+    color: #fff;
+    background-color: #0056b3;
+    border-color: #0056b3;
+}
+
+.btn-add-photo {
+    display: inline-block;
+    width: 3rem;
+    height: 3rem;
+    background-color: #28a745;
+    color: white;
+    text-align: center;
+    line-height: 3rem;
+    margin-right: .5rem;
+    border-radius: .25rem;
+    cursor: pointer;
+}
+
+    .btn-add-photo:hover {
+        background-color: #218838;
+    }
+
+.photo-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(3rem, 1fr));
+    grid-gap: .5rem;
+    margin-bottom: 1rem;
+}

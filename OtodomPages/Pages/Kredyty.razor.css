@@ -1,9 +1,28 @@
-﻿body {
+﻿body, html {
     font-family: Arial, sans-serif;
     background-color: #f4f4f4;
     margin: 0;
     padding: 20px;
     color: #333;
+    height: 100%;
+}
+
+.video-background {
+    position: fixed;
+    right: 0;
+    bottom: 0;
+    min-width: 100%;
+    min-height: 100%;
+    width: auto;
+    height: auto;
+    z-index: -100;
+}
+
+video {
+    display: block;
+    width: 100vw;
+    height: 100vh;
+    object-fit: cover;
 }
 
 h3 {
@@ -82,18 +101,40 @@ a {
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
 }
 
+.container2 {
+    padding: 20px;
+    background: rgba(255, 255, 255, 0.9);
+    border-radius: 8px;
+    margin-top: 20px;
+}
+
 .calculator {
     display: flex;
     justify-content: space-between;
     margin-bottom: 30px;
+    padding: 20px;
+    flex-direction: column;
+    align-items: center;
 }
 
 .controls {
     flex-basis: 60%;
+    margin-bottom: 20px;
+}
+
+.control {
+    margin: 10px 0;
 }
 
 .card-content {
     margin-top: 20px;
+}
+
+.results {
+    background: rgba(0, 0, 0, 0.5);
+    color: white;
+    padding: 10px;
+    border-radius: 8px;
 }
 
 .button {

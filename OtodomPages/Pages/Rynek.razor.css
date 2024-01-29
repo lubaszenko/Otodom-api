@@ -9,6 +9,7 @@ footer {
     padding: 10px 0;
     text-align: center;
     margin-top: 20px;
+    opacity: 0.9;
 }
 
 footer p {
@@ -27,102 +28,202 @@ footer a {
         text-decoration: underline;
     }
 
-.why-housholding {
+.why-householding {
     text-align: center;
-    background: white;
-    padding: 20px;
+    width: 900px; /* Możesz zmienić szerokość zgodnie z potrzebami */
+    margin: 0 auto; /* To centruje kontener w poziomie */
+    padding: 5px;
+    opacity: 0.9;
+    background-color: white;
+    border-radius: 15px; /* To dodaje zaokrąglenie narożników */
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1); /* Opcjonalnie, cień dla lepszego efektu */
+    position: relative; /* Ustaw pozycję względem innych elementów, jeśli to konieczne */
+    z-index: 10; /* Upewnij się, że kontener jest nad tłem */
+    overflow: hidden; /* Zapobiega wyciekom zawartości poza zaokrąglone narożniki */
 }
 
-    .why-housholding .container {
-        max-width: 1200px;
+    .why-householding .container {
+        max-width: 900px;
         margin: 0 auto;
     }
 
-    .why-housholding h2 {
+    .why-householding h2 {
         margin-bottom: 20px;
     }
 
-    .why-housholding p {
+    .why-householding p {
         margin-bottom: 40px;
     }
 
-.cards {
-    display: flex;
-    justify-content: space-around;
+.title-card {
+    background-color: #ffffff;
+    padding: 20px;
+    margin-bottom: 20px; /* Dostosuj odstęp, aby pasował do layoutu */
+    box-shadow: 0px 0px 10px rgba(0,0,0,0.1);
+    border-radius: 4px;
+    text-align: center; /* Jeśli chcesz, aby tekst był na środku */
+    position: relative; /* Jeśli będziesz potrzebować dodatkowych elementów absolutnie pozycjonowanych */
+    z-index: 2; /* Zapewnia, że tekst będzie na wierzchu, jeśli masz inne warstwy */
 }
 
-.card {
-    width: 30%;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-    margin-bottom: 20px;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
+.container {
+    background-color: white;
+    max-width: 1200px;
+    margin: auto;
+    position: relative; /* Dla pozycjonowania względnego */
+    z-index: 3; /* Nad tłem */
 }
 
-.card-container {
-    display: flex; 
-    align-items: stretch; 
-}
-
-.card img {
-    width: 100%; 
-    height: auto; 
-    object-fit: cover;
-}
-
-.card-content {
+.container2 {
+    max-width: 1200px;
+    margin: 0 auto;
     padding: 20px;
 }
 
-.card-icon {
-    display: inline-block;
-    padding: 10px;
-    color: white;
-    font-weight: bold;
+.card-container {
+    display: flex;
+    justify-content: space-between;
     margin-bottom: 20px;
 }
 
-.card-content p {
-    text-align: left;
-    color: grey;
-    margin-bottom: 20px;
+.card {
+    background-color: #ffffff;
+    margin: 10px;
+    flex-basis: calc(33.333% - 20px);
+    box-shadow: 0px 0px 10px rgba(0,0,0,0.1);
+    border-radius: 4px;
+    overflow: hidden;
 }
 
-button {
-    background-color: #4CAF50; 
-    color: white;
-    border: none;
-    padding: 10px 20px;
-    text-transform: uppercase;
-    margin: 0 auto;
-    display: block;
-    cursor: pointer;
+.card-content {
+    position: relative; /* Ustawienie względem kafelka */
+    z-index: 2; /* Upewnij się, że tekst jest widoczny nad wideo */
+    color: #000; /* Ciemny kolor tekstu dla czytelności */
+    padding: 1rem; /* Odstęp wewnątrz kafelka */
+    /* pozostałe style */
 }
 
-    button:hover {
-        background-color: darken(#4CAF50, 10%); /* Ciemniejszy odcień zielonego przy najechaniu */
+.card .overlay {
+    position: absolute; /* Pełne pokrycie tłem kafelka */
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.5); /* Ciemne tło z przezroczystością */
+    z-index: 1; /* Poniżej tekstu, ale nad wideo */
+}
+
+    .card img {
+        width: 100%; /* Szerokość obrazu na 100% kontenera */
+        height: 200px; /* Stała wysokość dla wszystkich obrazów */
+        object-fit: cover; /* Obrazy będą pokrywały obszar bez utraty proporcji */
     }
 
-.button-container {
-    box-sizing: border-box; /* Zapewnia, że padding i border są wliczane do szerokości elementu */
-    padding: 10px; /* Odpowiedni odstęp wewnątrz kontenera przycisku */
-}
-
-.button {
-    max-width: 100%; /* Maksymalna szerokość przycisku nie przekracza kontenera */
-    width: auto; /* Szerokość dostosowuje się do zawartości przycisku */
-    margin: 0; /* Brak zewnętrznego odstępu dla przycisku */
-    padding: 10px 20px; /* Odpowiedni odstęp wewnątrz przycisku */
-}
-
-@media (max-width: 768px) {
+@media (max-width: 992px) {
     .card-container {
-        flex-direction: column;
+        justify-content: space-around;
     }
 
     .card {
-        width: 100%; /* Karty na pełną szerokość na mniejszych ekranach */
+        flex: 0 0 calc(50% - 20px); /* Dwie karty na szerokość dla tabletów */
     }
 }
 
+@media (max-width: 768px) {
+    .card {
+        flex: 0 0 100%; /* Jedna karta na szerokość dla urządzeń mobilnych */
+        max-width: 100%; /* Zapewnienie, że karta nie przekracza szerokości ekranu */
+    }
+}
+
+.btn-primary {
+    color: #FFFFFF;
+    background-color: #007BFF; /* Niebieskie tło */
+    border: none;
+    padding: 10px 15px;
+    text-transform: uppercase;
+    border-radius: 4px;
+    text-decoration: none; /* Usunięcie podkreślenia z linków */
+    display: block; /* Zmiana na block umożliwia automatyczne wyrównanie */
+    margin: 20px auto 10px; /* Marginesy górny i dolny oraz auto po bokach */
+    z-index: 10; /* Upewnij się, że przyciski są nad wideo */
+    position: relative;
+    width: fit-content; /* Szerokość dopasowana do zawartości */
+}
+
+    .btn-primary:hover {
+        background-color: #0056b3; /* Ciemniejszy odcień niebieskiego przy najechaniu */
+    }
+
+.video-background {
+    position: absolute;
+    top: 0;
+    left: 0;
+    min-width: 100%;
+    min-height: 100%;
+    width: auto;
+    height: 500px;
+    z-index: -1; /* Upewnij się, że wideo jest za innymi elementami */
+}
+
+    .video-background video {
+        width: 100%;
+        height: 100%;
+        object-fit: cover; /* Zapewnia pokrycie całego obszaru bez rozciągania */
+    }
+
+.island-container {
+    display: flex;
+    justify-content: space-between;
+    margin: 0 auto;
+    max-width: 1200px;
+}
+
+.island {
+    background-color: #ffffff;
+    flex-basis: calc(33.333% - 20px);
+    margin: 10px;
+    padding: 20px;
+    box-shadow: 0px 0px 10px rgba(0,0,0,0.1);
+    border-radius: 4px;
+    opacity: 0.9;
+}
+
+    /* Ustawienie przycisków obok siebie */
+    .island .btn-primary {
+        margin-top: 10px; /* Odstęp od górnego tekstu */
+        display: inline-block; /* Aby przyciski były obok siebie */
+        width: calc(50% - 5px); /* Alokacja połowy szerokości kontenera dla przycisku */
+        text-align: center; /* Wyśrodkowanie tekstu na przycisku */
+    }
+
+/* Responsywność dla "wysp" */
+@media (max-width: 768px) {
+    .island-container, .card-container {
+        flex-direction: column;
+    }
+
+    .island, .card {
+        flex-basis: 100%;
+    }
+
+        .island .btn-primary {
+            width: 100%; /* Pełna szerokość na urządzeniach mobilnych */
+            margin-top: 10px;
+        }
+}
+
+/* Jeśli chcesz, aby kontener miał maksymalną szerokość i był responsywny: */
+@media (max-width: 950px) {
+    .why-householding {
+        width: 85%; /* Szerokość kontenera to 85% szerokości ekranu */
+        margin: 20px auto; /* Dodatkowy margines, aby zapewnić przestrzeń */
+    }
+}
+
+/* Ustawienia dla małych urządzeń */
+@media (max-width: 600px) {
+    .why-householding {
+        width: 95%; /* Szerokość kontenera to 95% szerokości ekranu na małych urządzeniach */
+    }
+}

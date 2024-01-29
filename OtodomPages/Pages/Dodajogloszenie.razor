@@ -2,8 +2,162 @@
 @inject HttpClient httpClient
 @using Otodom.DTO
 
-<h3>Dodajogloszenie</h3>
+<h3>Dodaj nowe ogłoszenie</h3>
+
+@if (!string.IsNullOrEmpty(successMessage))
+{
+    <div class="alert alert-success">@successMessage</div>
+}
+
+@if (!string.IsNullOrEmpty(errorMessage))
+{
+    <div class="alert alert-danger">@errorMessage</div>
+}
+
+<EditForm Model="@ogloszenie" OnValidSubmit="@HandleValidSubmit">
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+
+    <div class="form-group">
+        <label for="Tytul">Tytuł:</label>
+        <InputText id="Tytul" class="form-control" @bind-Value="ogloszenie.Tytul" />
+    </div>
+
+    <div class="form-group">
+        <label for="Status">Status:</label>
+        <InputCheckbox id="Status" @bind-Value="ogloszenie.Status" />
+    </div>
+
+    <div class="form-group">
+        <label for="Opis">Opis:</label>
+        <InputTextArea id="Opis" class="form-control" @bind-Value="ogloszenie.Opis" />
+    </div>
+
+    <div class="form-group">
+        <label for="Cena">Cena:</label>
+        <InputNumber id="Cena" class="form-control" @bind-Value="ogloszenie.Cena" />
+    </div>
+
+    <div class="form-group">
+        <label for="Klient">Klient:</label>
+        <InputNumber id="Klient" class="form-control" @bind-Value="ogloszenie.KlientIdKlienta" />
+    </div>
+
+    <div class="form-group">
+        <label for="Wojewodztwo">Województwo:</label>
+        <InputText id="Wojewodztwo" class="form-control" @bind-Value="ogloszenie.Wojewodztwo" />
+    </div>
+
+    <div class="form-group">
+        <label for="Miasto">Miasto:</label>
+        <InputText id="Miasto" class="form-control" @bind-Value="ogloszenie.Miasto" />
+    </div>
+
+    <div class="form-group">
+        <label for="KodPocztowy">Kod Pocztowy:</label>
+        <InputNumber id="KodPocztowy" class="form-control" @bind-Value="ogloszenie.KodPocztowy" />
+    </div>
+
+    <div class="form-group">
+        <label for="Ulica">Ulica:</label>
+        <InputText id="Ulica" class="form-control" @bind-Value="ogloszenie.Ulica" />
+    </div>
+
+    <div class="form-group">
+        <label for="NrDomu">Numer domu:</label>
+        <InputNumber id="NrDomu" class="form-control" @bind-Value="ogloszenie.NrDomu" />
+    </div>
+
+    <div class="form-group">
+        <label for="PowierzchniaDomu">Powierzchnia domu:</label>
+        <InputNumber id="PowierzchniaDomu" class="form-control" @bind-Value="ogloszenie.PowierzchniaDomu" />
+    </div>
+
+    <div class="form-group">
+        <label for="LiczbaPieter">Liczba pięter:</label>
+        <InputNumber id="LiczbaPieter" class="form-control" @bind-Value="ogloszenie.LiczbaPieter" />
+    </div>
+
+    <div class="form-group">
+        <label for="RokBudowy">Rok budowy:</label>
+        <InputNumber id="RokBudowy" class="form-control" @bind-Value="ogloszenie.RokBudowy" />
+    </div>
+
+    <div class="form-group">
+        <label for="StanWykonczenia">Stan wykończenia:</label>
+        <InputText id="StanWykonczenia" class="form-control" @bind-Value="ogloszenie.StanWykonczenia" />
+    </div>
+
+    <div class="form-group">
+        <label for="RodzajOkna">Rodzaj okna:</label>
+        <InputText id="RodzajOkna" class="form-control" @bind-Value="ogloszenie.RodzajOkna" />
+    </div>
+
+    <div class="form-group">
+        <label for="TypOgrzewania">Typ ogrzewania:</label>
+        <InputText id="TypOgrzewania" class="form-control" @bind-Value="ogloszenie.TypOgrzewania" />
+    </div>
+
+    <div class="form-group">
+        <label for="RodzajZabudowy">Rodzaj zabudowy:</label>
+        <InputText id="RodzajZabudowy" class="form-control" @bind-Value="ogloszenie.RodzajZabudowy" />
+    </div>
+
+    @for (int i = 0; i < ogloszenie.Zdjecie.Count; i++)
+    {
+        var index = i; // Lokalna zmienna do użycia w lambda
+        <InputText @bind-Value="@ogloszenie.Zdjecie[index]" placeholder="Wklej URL zdjęcia" />
+    }
+    
+    <button @onclick="AddNewZdjecieField">Dodaj kolejne zdjęcie</button><br />
+    <br /><button type="submit" class="btn btn-primary">Dodaj ogłoszenie</button>
+</EditForm>
+
+<footer>
+    <div class="container">
+        <p>&copy; 2024 HouseHolding.pl, Grupa HouseHolding sp. z o.o.</p>
+        <p>
+            <a href="https://poradnikprzedsiebiorcy.pl/warunki-wspolpracy">WARUNKI WSPÓŁPRACY</a>
+            <a href="https://policies.google.com/privacy?hl=pl">POLITYKA PRYWATNOŚCI</a>
+            <a href="https://support.google.com/accounts/answer/61416?hl=pl&co=GENIE.Platform%3DAndroid">USTAWIENIA PLIKÓW COOKIE</a>
+        </p>
+    </div>
+</footer>
 
 @code {
+    private Ogloszenieznieruchomoscia ogloszenie = new Ogloszenieznieruchomoscia() { Zdjecie = new List<string>() { "" } };
+    private string successMessage;
+    private string errorMessage;
 
+    private void AddNewZdjecieField()
+    {
+        ogloszenie.Zdjecie.Add("");
+    }
+
+    private async Task HandleValidSubmit()
+    {
+        try
+        {
+            var response = await httpClient.PostAsJsonAsync("https://localhost:7144/ogloszenies/nieruchomosc", ogloszenie);
+
+            if (response.IsSuccessStatusCode)
+            {
+                // Clear the form
+                ogloszenie = new Ogloszenieznieruchomoscia() { Zdjecie = new List<string>() { "" } };
+                successMessage = "Ogłoszenie zostało pomyślnie dodane.";
+                errorMessage = null;
+            }
+            else
+            {
+                // Set the error message
+                errorMessage = "Wystąpił błąd podczas dodawania ogłoszenia. Spróbuj ponownie.";
+                successMessage = null;
+            }
+        }
+        catch (Exception ex)
+        {
+            errorMessage = $"Wystąpił wyjątek: {ex.Message}";
+            successMessage = null;
+        }
+    }
 }
