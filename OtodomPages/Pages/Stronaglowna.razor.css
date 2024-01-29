@@ -1,0 +1,132 @@
+﻿.container {
+    width: 80%;
+    margin: auto;
+    padding: 20px;
+}
+
+.header-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 0;
+}
+
+.listing {
+    border: 1px solid #ccc;
+    padding: 15px;
+    margin-bottom: 20px;
+    background-color: ghostwhite;
+}
+
+.listing-details, .client-details {
+    flex: 1;
+    margin: 10px;
+}
+
+.listing2 {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 20px;
+}
+Dodatkowe style, aby lepiej wyglądało
+.listing-details {
+    border-right: 2px solid #ddd; /* Linia oddzielająca */
+}
+
+.client-details {
+    padding-left: 20px; /* Odstęp od linii oddzielającej */
+}
+
+.footer {
+    background-color: #f5f5f5;
+    padding: 20px;
+    text-align: center;
+}
+
+footer {
+    background-color: #f2f2f2;
+    padding: 10px 0;
+    text-align: center;
+    margin-top: 20px;
+}
+
+    footer p {
+        margin: 0;
+        padding: 5px;
+        color: #333;  Jasno-szary kolor tekstu 
+    }
+
+    footer a {
+        margin-right: 10px;
+        color: #333;  Jasno-szary kolor tekstu 
+        text-decoration: none;
+    }
+
+        footer a:hover {
+            text-decoration: underline;
+        }
+
+.custom-select-wrapper {
+    margin-bottom: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+    .custom-select-wrapper select {
+        padding: 10px 15px;
+        border-radius: 5px;
+        border: 1px solid #ddd;
+        background-color: white;
+        font-size: 1rem;
+        color: #333;
+        cursor: pointer;
+    }
+
+         Stylowanie strzałki rozwijania (dla przeglądarek, które to obsługują) 
+        .custom-select-wrapper select::-ms-expand {
+            display: none;  Ukrywa domyślną strzałkę w IE i Edge 
+        }
+
+        .custom-select-wrapper select:-moz-focusring {
+            color: transparent;
+            text-shadow: 0 0 0 #333;  Dla Firefoxa, aby usunąć niebieski kolor tekstu przy zaznaczeniu 
+        }
+
+
+
+ Dodatkowe style dla responsywności i lepszego wyglądu 
+@media (max-width: 768px) {
+    .custom-select-wrapper {
+        width: 100%;
+    }
+
+
+
+    .carousel-controls {
+        text-align: center;
+    }
+     Styl dla opcji 
+    .custom-select option {
+        padding: 10px;  padding dla opcji 
+        background: #fff;  białe tło dla opcji 
+    }
+
+        .custom-select option:hover, .custom-select option:focus {
+            background-color: #f1f1f1;  kolor tła dla opcji przy hover/focus 
+        }
+
+    button {
+        background-color: #007bff;
+        color: white;
+        border: none;
+        padding: 10px 15px;
+        margin-top: 10px;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+
+        button:hover {
+            background-color: #a5d6a7;
+        }

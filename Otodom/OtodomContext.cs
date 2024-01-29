@@ -49,7 +49,7 @@ namespace Otodom
                     .HasColumnName("email");
 
                 entity.Property(e => e.NazwaAgencji)
-                    .HasMaxLength(20)
+                    .HasMaxLength(50)
                     .IsUnicode(false)
                     .HasColumnName("nazwa_agencji");
 

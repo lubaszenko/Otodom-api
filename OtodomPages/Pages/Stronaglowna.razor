@@ -1,0 +1,202 @@
+﻿@page "/stronaglowna"
+@inject HttpClient httpClient
+@using Otodom.DTO
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
+
+<PageTitle>Ogłoszenia</PageTitle>
+
+<div class="container">
+    <div class="header-container">
+        <div class="header-title">
+            <h3>Ogłoszenia</h3>
+            <p>Na sprzedaż:</p>
+        </div>
+
+        <div class="custom-select-wrapper">
+            <h4>Wybierz walutę</h4>
+            <select @onchange="OnCurrencyChange">
+                <option value="pln">Złoty polski (PLN)</option>
+                <option value="eur">Euro (EUR)</option>
+                <option value="usd">Dolar amerykański (USD)</option>
+                <option value="gbp">Funt brytyjski (GBP)</option>
+            </select>
+        </div>
+    </div>
+    @if (ogloszenia != null && ogloszenia.Any())
+    {
+
+        foreach (var ogloszenie in ogloszenia)
+        {
+            <div class="listing">
+
+
+                <h5>Nieruchomość:</h5>
+                <p>@ogloszenie.Tytul</p>
+                <p>Status: @(ogloszenie.Status ? "Aktywne" : "Nieaktywne")</p>
+                <p>Województwo: @ogloszenie.Nieruchomosc.Wojewodztwo</p>
+                <p>Miasto: @ogloszenie.Nieruchomosc.Miasto</p>
+                <p>Cena: @ConvertToSelectedCurrency(ogloszenie.Cena) (@selectedCurrency.ToUpper())</p>
+                <h5>Zdjęcia:</h5>
+                @if (ogloszenie.Nieruchomosc.Zdjecia != null && ogloszenie.Nieruchomosc.Zdjecia.Any())
+                {
+                    var carouselId = $"carouselExampleControls{ogloszenie.Id}";
+                    <div id="@carouselId" class="carousel slide" data-bs-ride="carousel">
+                        <div class="carousel-inner">
+                            @for (int i = 0; i < ogloszenie.Nieruchomosc.Zdjecia.Count; i++)
+                            {
+                                <div class="carousel-item @(i == 0 ? "active" : "")">
+                                    <img src="@ogloszenie.Nieruchomosc.Zdjecia[i].Zdjecie" class="d-block carousel-image" alt="Zdjęcie nieruchomości">
+                                </div>
+                            }
+                        </div>
+                        <button class="carousel-control-prev" type="button" data-bs-target="#@carouselId" data-bs-slide="prev">
+                            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                            <span class="visually-hidden">Poprzednie</span>
+                        </button>
+                        <button class="carousel-control-next" type="button" data-bs-target="#@carouselId" data-bs-slide="next">
+                            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                            <span class="visually-hidden">Następne</span>
+                        </button>
+                    </div>
+                }
+                else
+                {
+                    <p>Brak zdjęć.</p>
+                }
+
+
+                <button @onclick="() => ToggleDetails(ogloszenie.Id)">
+                    @(detailsVisibility[ogloszenie.Id] ? "Pokaż mniej" : "Pokaż więcej")
+                </button>
+
+                @if (detailsVisibility[ogloszenie.Id])
+                {
+                    <div class="listing2">
+                        <div class="listing-details">
+                            <h3> Szczegółowe informacje dotyczące nieruchomosci:</h3>
+                            <p>Dodano: @ogloszenie.DataDodania.ToString("d")</p>
+                            <p>Opis: @ogloszenie.Opis</p>
+                            <p>Kod pocztowy: @ogloszenie.Nieruchomosc.KodPocztowy</p>
+                            <p>Ulica: @ogloszenie.Nieruchomosc.Ulica</p>
+                            <p>Nr domu: @ogloszenie.Nieruchomosc.NrDomu</p>
+                            <p>Powierzchnia: @ogloszenie.Nieruchomosc.PowierzchniaDomu m²</p>
+                            <p>Liczba pięter: @ogloszenie.Nieruchomosc.LiczbaPieter</p>
+                            <p>Rok budowy: @ogloszenie.Nieruchomosc.RokBudowy</p>
+                            <p>Stan wykonczenia: @ogloszenie.Nieruchomosc.StanWykonczenia</p>
+                            <p>Rodzaj okna: @ogloszenie.Nieruchomosc.RodzajOkna</p>
+                            <p>Typ ogrzewania: @ogloszenie.Nieruchomosc.TypOgrzewania</p>
+                            <p>Rodzaj zabudowy: @ogloszenie.Nieruchomosc.RodzajZabudowy</p>
+
+                        </div>
+                        <div class="client-details">
+                            <h3> Szczegółowe informacje dotyczące sprzedającego:</h3>
+                            <p>Klient: @ogloszenie.ImieKlienta @ogloszenie.NazwiskoKlienta</p>
+                            <p>Email: @ogloszenie.Email</p>
+                            <p>Telefon: @ogloszenie.Telefon</p>
+                        </div>
+                    </div>
+                    <button> Usuń ogłoszenie </button>
+
+                }
+            </div>
+        }
+    }
+    else
+    {
+        <p>Brak ogłoszeń do wyświetlenia.</p>
+    }
+</div>
+
+
+
+<footer>
+    <div class="container">
+        <p>&copy; 2024 HouseHolding.pl, Grupa HouseHolding sp. z o.o.</p>
+        <p>
+            <a href="https://poradnikprzedsiebiorcy.pl/warunki-wspolpracy">WARUNKI WSPÓŁPRACY</a>
+            <a href="https://policies.google.com/privacy?hl=pl">POLITYKA PRYWATNOŚCI</a>
+            <a href="https://support.google.com/accounts/answer/61416?hl=pl&co=GENIE.Platform%3DAndroid">USTAWIENIA PLIKÓW COOKIE</a>
+        </p>
+    </div>
+</footer>
+
+@code {
+    private List<OgloszenieResponse> ogloszenia;
+    private decimal exchangeRate = 1;
+    private string selectedCurrency = "pln";
+    private Dictionary<int, bool> detailsVisibility = new Dictionary<int, bool>();
+    protected override async Task OnInitializedAsync()
+    {
+        try
+        {
+            ogloszenia = await httpClient.GetFromJsonAsync<List<OgloszenieResponse>>("https://localhost:7144/ogloszenies");
+            foreach (var ogloszenie in ogloszenia)
+            {
+                detailsVisibility[ogloszenie.Id] = false;
+            }
+
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Błąd: {ex.Message}");
+        }
+    }
+    private void ToggleDetails(int ogloszenieId)
+    {
+        detailsVisibility[ogloszenieId] = !detailsVisibility[ogloszenieId];
+    }
+    private async Task OnCurrencyChange(ChangeEventArgs e)
+    {
+        selectedCurrency = e.Value.ToString();
+        await FetchExchangeRate(selectedCurrency);
+    }
+
+    private async Task FetchExchangeRate(string currencyCode)
+    {
+        if (currencyCode == "pln")
+        {
+            exchangeRate = 1; // Dla PLN nie ma potrzeby pobierania kursu
+            return;
+        }
+
+        string url = currencyCode switch
+        {
+            "eur" => "https://api.nbp.pl/api/exchangerates/rates/a/eur/?format=json",
+            "usd" => "https://api.nbp.pl/api/exchangerates/rates/a/usd/?format=json",
+            "gbp" => "https://api.nbp.pl/api/exchangerates/rates/a/gbp/?format=json",
+            _ => throw new InvalidOperationException("Nieznany kod waluty")
+        };
+
+        try
+        {
+            var response = await httpClient.GetFromJsonAsync<NbpApiResponse>(url);
+            exchangeRate = response?.Rates.FirstOrDefault()?.Mid ?? 1;
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Wystąpił błąd: {ex.Message}");
+        }
+    }
+
+    private decimal ConvertToSelectedCurrency(decimal amountInPln)
+    {
+        var convertedAmount = amountInPln / exchangeRate;
+        return Math.Round(convertedAmount, 0); // Zaokrąglenie do pełnych kwot
+    }
+
+
+    private class NbpApiResponse
+    {
+        public string Table { get; set; }
+        public string Currency { get; set; }
+        public string Code { get; set; }
+        public List<Rate> Rates { get; set; }
+    }
+
+    private class Rate
+    {
+        public string No { get; set; }
+        public string EffectiveDate { get; set; }
+        public decimal Mid { get; set; }
+    }
+}
