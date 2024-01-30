@@ -1,11 +1,21 @@
 ﻿@inherits LayoutComponentBase
+@inject HttpClient HttpClient
+
 <div class="page">
     <div class="sidebar">
         <NavMenu />
     </div>
 
     <main>
-        <div class="top-row px-4">
+        <div class="top-row">
+            <p>Aktualne ceny walut </p>
+            <img src="oi--euro.svg" alt="Flaga Euro" />
+            <p>Cena Euro: @eurRate</p>
+            <img src="oi--dollar.svg" alt="Flaga USD" />
+            <p>Cena USD: @usdRate</p>
+            <img src="oi--british-pound.svg" alt="Flaga GBP" />
+            <p>Cena GBP: @gbpRate</p>
+
             <a href="https://redro.pl/plakat-petla-w-reku,24238177" target="_blank">O nas</a>
         </div>
 
@@ -14,3 +24,33 @@
         </article>
     </main>
 </div>
+
+@code {
+    private decimal eurRate;
+    private decimal usdRate;
+    private decimal gbpRate;
+
+    protected override async Task OnInitializedAsync()
+    {
+        eurRate = await GetExchangeRate("eur");
+        usdRate = await GetExchangeRate("usd");
+        gbpRate = await GetExchangeRate("gbp");
+    }
+
+    private async Task<decimal> GetExchangeRate(string currencyCode)
+    {
+        var url = $"https://api.nbp.pl/api/exchangerates/rates/a/{currencyCode}/?format=json";
+        var response = await HttpClient.GetFromJsonAsync<NbpResponse>(url);
+        return response.Rates[0].Mid;
+    }
+
+    private class NbpResponse
+    {
+        public Rate[] Rates { get; set; }
+
+        public class Rate
+        {
+            public decimal Mid { get; set; }
+        }
+    }
+}
