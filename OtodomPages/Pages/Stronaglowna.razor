@@ -29,7 +29,6 @@
         {
             <div class="listing">
 
-
                 <h5>Nieruchomość:</h5>
                 <p>@ogloszenie.Tytul</p>
                 <p>Status: @(ogloszenie.Status ? "Aktywne" : "Nieaktywne")</p>
@@ -65,7 +64,7 @@
                 }
 
 
-                <button @onclick="() => ToggleDetails(ogloszenie.Id)">
+                <button class="btn btn-primary" @onclick="() => ToggleDetails(ogloszenie.Id)">
                     @(detailsVisibility[ogloszenie.Id] ? "Pokaż mniej" : "Pokaż więcej")
                 </button>
 
@@ -95,7 +94,7 @@
                             <p>Telefon: @ogloszenie.Telefon</p>
                         </div>
                     </div>
-                    <button> Usuń ogłoszenie </button>
+                    <button class="btn btn-danger" @onclick="() => UsunOgloszenie(ogloszenie.Id)"> Usuń ogłoszenie </button>
 
                 }
             </div>
@@ -125,7 +124,8 @@
     private decimal exchangeRate = 1;
     private string selectedCurrency = "pln";
     private Dictionary<int, bool> detailsVisibility = new Dictionary<int, bool>();
-    protected override async Task OnInitializedAsync()
+
+    protected async Task FetchData()
     {
         try
         {
@@ -141,10 +141,35 @@
             Console.WriteLine($"Błąd: {ex.Message}");
         }
     }
+
+    protected override async Task OnInitializedAsync()
+    {
+        await FetchData();
+    }
+
+    private async Task UsunOgloszenie(int idOgloszeniaDoUsuniecia)
+    {
+        var response = await httpClient.DeleteAsync($"https://localhost:7144/ogloszenies/{idOgloszeniaDoUsuniecia}");
+
+        if (response.IsSuccessStatusCode)
+        {
+            // Tutaj możesz przekierować użytkownika lub wyświetlić komunikat o sukcesie
+            Console.WriteLine("Ogłoszenie zostało usunięte.");
+            await FetchData();
+            StateHasChanged();
+        }
+        else
+        {
+            // Tutaj wyświetl komunikat o błędzie
+            Console.WriteLine("Wystąpił błąd podczas usuwania ogłoszenia.");
+        }
+    }
+
     private void ToggleDetails(int ogloszenieId)
     {
         detailsVisibility[ogloszenieId] = !detailsVisibility[ogloszenieId];
     }
+
     private async Task OnCurrencyChange(ChangeEventArgs e)
     {
         selectedCurrency = e.Value.ToString();
@@ -183,7 +208,6 @@
         var convertedAmount = amountInPln / exchangeRate;
         return Math.Round(convertedAmount, 0); // Zaokrąglenie do pełnych kwot
     }
-
 
     private class NbpApiResponse
     {

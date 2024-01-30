@@ -21,5 +21,9 @@
         public string TypOgrzewania { get; set; } = null!;
         public string RodzajZabudowy { get; set; } = null!;
         public List<string> Zdjecie { get; set;}
+        public Ogloszenieznieruchomoscia()
+        {
+            DataDodania = DateTime.Now;
+        }
     }
 }

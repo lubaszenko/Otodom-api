@@ -29,7 +29,13 @@
     align-items: flex-start;
     margin-bottom: 20px;
 }
-Dodatkowe style, aby lepiej wyglądało
+
+.btn {
+    margin-top: 10px;
+}
+
+/* Dodatkowe style, aby lepiej wyglądało */
+
 .listing-details {
     border-right: 2px solid #ddd; /* Linia oddzielająca */
 }
@@ -84,7 +90,8 @@ footer {
         cursor: pointer;
     }
 
-         Stylowanie strzałki rozwijania (dla przeglądarek, które to obsługują) 
+        /* Stylowanie strzałki rozwijania (dla przeglądarek, które to obsługują) */
+
         .custom-select-wrapper select::-ms-expand {
             display: none;  Ukrywa domyślną strzałkę w IE i Edge 
         }
@@ -96,25 +103,26 @@ footer {
 
 
 
- Dodatkowe style dla responsywności i lepszego wyglądu 
+/* Dodatkowe style dla responsywności i lepszego wyglądu */
+
 @media (max-width: 768px) {
     .custom-select-wrapper {
         width: 100%;
     }
 
-
-
     .carousel-controls {
         text-align: center;
     }
-     Styl dla opcji 
+
+    /* Styl dla opcji */
+
     .custom-select option {
-        padding: 10px;  padding dla opcji 
-        background: #fff;  białe tło dla opcji 
+        padding: 10px;
+        background: #fff;
     }
 
         .custom-select option:hover, .custom-select option:focus {
-            background-color: #f1f1f1;  kolor tła dla opcji przy hover/focus 
+            background-color: #f1f1f1;
         }
 
     button {
@@ -130,3 +138,5 @@ footer {
         button:hover {
             background-color: #a5d6a7;
         }
+}
+
